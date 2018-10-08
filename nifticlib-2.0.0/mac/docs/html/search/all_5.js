@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['fname',['fname',['../structnifti__image.html#a439fb70fd16ce03d24ff975e4468c0f8',1,'nifti_image']]],
+  ['freq_5fdim',['freq_dim',['../structnifti__image.html#a50953906569b58e6b1aaeb7759767b34',1,'nifti_image']]],
+  ['fsl_5ftype',['FSL_TYPE',['../group___f_s_l___t_y_p_e.html',1,'']]],
+  ['fslclose',['FslClose',['../fslio_8c.html#a417d6fbf3035e9d028a4e3dafa7a7f18',1,'FslClose(FSLIO *fslio):&#160;fslio.c'],['../fslio_8h.html#a417d6fbf3035e9d028a4e3dafa7a7f18',1,'FslClose(FSLIO *fslio):&#160;fslio.c']]],
+  ['fslfiletypestring',['FslFileTypeString',['../fslio_8c.html#a93be59788d28786380c85b0a0f57b397',1,'FslFileTypeString(int filetype):&#160;fslio.c'],['../fslio_8h.html#afbdb0046a66be821a93c9af12c842ad5',1,'FslFileTypeString(int filetype):&#160;fslio.c']]],
+  ['fslgetbufferasscaleddouble',['FslGetBufferAsScaledDouble',['../fslio_8c.html#a8f4c12a7a66d6b19ba9cdea23fd2a1ea',1,'FslGetBufferAsScaledDouble(FSLIO *fslio):&#160;fslio.c'],['../fslio_8h.html#a64ec86d1d2f8e4d0d4b12384ca1ca721',1,'FslGetBufferAsScaledDouble(FSLIO *fslio):&#160;fslio.c']]],
+  ['fslgetreadfiletype',['FslGetReadFileType',['../fslio_8c.html#a1b37a96c20717fb3a8ed1c3e30bdc554',1,'fslio.c']]],
+  ['fslgetvolumeasscaleddouble',['FslGetVolumeAsScaledDouble',['../fslio_8c.html#a9e2228ced70078b0229bb25e5db7d264',1,'FslGetVolumeAsScaledDouble(FSLIO *fslio, int vol):&#160;fslio.c'],['../fslio_8h.html#a1cd2a1f1b8fdf42ecf6f60eeb61c1608',1,'FslGetVolumeAsScaledDouble(FSLIO *fslio, int vol):&#160;fslio.c']]],
+  ['fslinit',['FslInit',['../fslio_8c.html#acc3ed701d5eff4e5c2f7fb829e754396',1,'FslInit(void):&#160;fslio.c'],['../fslio_8h.html#aa87d1f58ce713150eb4d470005cfb321',1,'FslInit(void):&#160;fslio.c']]],
+  ['fslio',['FSLIO',['../struct_f_s_l_i_o.html',1,'']]],
+  ['fslio_2ec',['fslio.c',['../fslio_8c.html',1,'']]],
+  ['fslio_2eh',['fslio.h',['../fslio_8h.html',1,'']]],
+  ['fslopen',['FslOpen',['../fslio_8c.html#ad042b69dce4d4b6a0e6d48e5519e8941',1,'FslOpen(const char *filename, const char *opts):&#160;fslio.c'],['../fslio_8h.html#a4a0001ad59578a36848d15d82be08d3b',1,'FslOpen(const char *filename, const char *opts):&#160;fslio.c']]],
+  ['fslreadallvolumes',['FslReadAllVolumes',['../fslio_8c.html#aee57f4c5d77fad8382354ee3c6ab9895',1,'FslReadAllVolumes(FSLIO *fslio, char *filename):&#160;fslio.c'],['../fslio_8h.html#a150dccb3af6a0494409ee72a5292614b',1,'FslReadAllVolumes(FSLIO *fslio, char *filename):&#160;fslio.c']]],
+  ['fslreadheader',['FslReadHeader',['../fslio_8c.html#aa745e53a297eb7ffdabfdd89eb1965d6',1,'FslReadHeader(char *fname):&#160;fslio.c'],['../fslio_8h.html#a51a468d8cf99eed1dda61d192a5ea8d2',1,'FslReadHeader(char *fname):&#160;fslio.c']]],
+  ['fslreadrowseries',['FslReadRowSeries',['../fslio_8c.html#aabc65d9d33f78cad78438a8fe30f2047',1,'FslReadRowSeries(FSLIO *fslio, void *buffer, short row, short slice, size_t nvols):&#160;fslio.c'],['../fslio_8h.html#aabc65d9d33f78cad78438a8fe30f2047',1,'FslReadRowSeries(FSLIO *fslio, void *buffer, short row, short slice, size_t nvols):&#160;fslio.c']]],
+  ['fslreadsliceseries',['FslReadSliceSeries',['../fslio_8c.html#ab2fcd2b0ccb4f917552adb27a28245ee',1,'FslReadSliceSeries(FSLIO *fslio, void *buffer, short slice, size_t nvols):&#160;fslio.c'],['../fslio_8h.html#ab2fcd2b0ccb4f917552adb27a28245ee',1,'FslReadSliceSeries(FSLIO *fslio, void *buffer, short slice, size_t nvols):&#160;fslio.c']]],
+  ['fslreadtimeseries',['FslReadTimeSeries',['../fslio_8c.html#a9bf6475860f2a1f4baa5b2cd43ac08a0',1,'FslReadTimeSeries(FSLIO *fslio, void *buffer, short xVox, short yVox, short zVox, size_t nvols):&#160;fslio.c'],['../fslio_8h.html#a9bf6475860f2a1f4baa5b2cd43ac08a0',1,'FslReadTimeSeries(FSLIO *fslio, void *buffer, short xVox, short yVox, short zVox, size_t nvols):&#160;fslio.c']]],
+  ['fslreadvolumes',['FslReadVolumes',['../fslio_8c.html#aec173c9ecb7af93bea8365dd37cc9901',1,'FslReadVolumes(FSLIO *fslio, void *buffer, size_t nvols):&#160;fslio.c'],['../fslio_8h.html#aec173c9ecb7af93bea8365dd37cc9901',1,'FslReadVolumes(FSLIO *fslio, void *buffer, size_t nvols):&#160;fslio.c']]],
+  ['fslwriteallvolumes',['FslWriteAllVolumes',['../fslio_8c.html#aa7b3ec44398ccdec59cd42e026e57dd3',1,'FslWriteAllVolumes(FSLIO *fslio, const void *buffer):&#160;fslio.c'],['../fslio_8h.html#aa7b3ec44398ccdec59cd42e026e57dd3',1,'FslWriteAllVolumes(FSLIO *fslio, const void *buffer):&#160;fslio.c']]],
+  ['fslwriteheader',['FslWriteHeader',['../fslio_8c.html#a97f42cbeda1175ea20456d3de7802964',1,'FslWriteHeader(FSLIO *fslio):&#160;fslio.c'],['../fslio_8h.html#a97f42cbeda1175ea20456d3de7802964',1,'FslWriteHeader(FSLIO *fslio):&#160;fslio.c']]],
+  ['fslwritevolumes',['FslWriteVolumes',['../fslio_8c.html#af49ad010bf6d549a64952a8c1314e0d5',1,'FslWriteVolumes(FSLIO *fslio, const void *buffer, size_t nvols):&#160;fslio.c'],['../fslio_8h.html#af49ad010bf6d549a64952a8c1314e0d5',1,'FslWriteVolumes(FSLIO *fslio, const void *buffer, size_t nvols):&#160;fslio.c']]],
+  ['fslxopen',['FslXOpen',['../fslio_8c.html#aeda7dfaf2b35bb9b6985cc0fefe389c8',1,'FslXOpen(const char *filename, const char *opts, int filetype):&#160;fslio.c'],['../fslio_8h.html#acc87624213e935a987984d8f6a23c750',1,'FslXOpen(const char *filename, const char *opts, int filetype):&#160;fslio.c']]]
+];
