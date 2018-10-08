@@ -25,9 +25,6 @@ MAPMRI dwi.nii.gz brain_mask.nii.gz bvals.txt bvecs.txt -grid_size 15 -order 6 -
 ## dti_fit
 dti_fit.m, a MATLAB implementation of diffusion tensor fitting
 
-### Dependencies:
-1. NIfTI_tools
-
 ### Run:
 dti_parameters = dti_fit('data',dwi,'bvals',bvals,'bvecs',bvecs,'brain_mask',brain_mask);
 
