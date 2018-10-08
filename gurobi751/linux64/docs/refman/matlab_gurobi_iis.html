@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>gurobi_iis()</TITLE>
+<META NAME="description" CONTENT="gurobi_iis()">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="matlab_computing_an_iis_wi.html">
+<LINK REL="up" HREF="matlab_computing_an_iis_wi.html">
+<LINK REL="next" HREF="matlab_setting_up_the_guro.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10979"
+  HREF="matlab_setting_up_the_guro.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10977"
+  HREF="matlab_computing_an_iis_wi.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10973"
+  HREF="matlab_computing_an_iis_wi.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10980"
+  HREF="matlab_setting_up_the_guro.html">Setting up the Gurobi</A>
+<B> Up:</B> <A NAME="tex2html10978"
+  HREF="matlab_computing_an_iis_wi.html">Computing an IIS with</A>
+<B> Previous:</B> <A NAME="tex2html10974"
+  HREF="matlab_computing_an_iis_wi.html">Computing an IIS with</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000113100000000000000"></A>
+<A NAME="matlabfunction:gurobi_iis"></A>
+<BR>
+gurobi_iis()
+</H3>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">gurobi_iis</SPAN></FONT></BIG></TD>
+<TD ALIGN="LEFT">( model, params )</TD>
+</TR>
+</TABLE>
+
+<P>
+Computes an IIS
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Arguments:</SPAN></BIG>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model struct must contain a valid Gurobi
+  model. See the
+  <A HREF="matlab_gurobi.html#matlabfunction:gurobi">gurobi</A> function for a
+  description of model's required fields and values.
+
+<P>
+ <SPAN  CLASS="textbf">params</SPAN>: The params struct may contain Gurobi parameters.
+  See the
+  <A HREF="matlab_gurobi.html#matlabfunction:gurobi">gurobi</A> function for a
+  description of the param's fields and values.
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">Example usage:</SPAN></BIG><PRE>
+clear model params
+model = gurobi_read('examples/data/klein1.mps')
+params.resultfile = 'myiis.ilp';
+iis   = gurobi_iis(model, params);\
+</PRE>
+
+<P>
+<BIG CLASS="LARGE"><SPAN  CLASS="textbf">The IIS result</SPAN></BIG>
+
+<P>
+The <code>gurobi_iis</code> function returns a struct <code>iis</code>, with
+various results stored in its named components. The specific results
+that are available depend on the type of model.
+
+<P>
+The <code>iis</code> struct will always contain the following fields
+<DL>
+<DT><STRONG>minimal</STRONG></DT>
+<DD>A logical scalar that indicates whether the computed
+  IIS is minimal. It will normally be true, but it may be false if the
+  IIS computation was stopped early (e.g due to a time limit or a user
+  interrupt).
+</DD>
+<DT><STRONG>constrs</STRONG></DT>
+<DD>A logical vector that indicates whether a linear
+  constraint appears in the computed IIS.
+</DD>
+<DT><STRONG>lb</STRONG></DT>
+<DD>A logical vector that indicates whether a lower bound in the
+  computed IIS.
+</DD>
+<DT><STRONG>ub</STRONG></DT>
+<DD>A logical vector that indicates whether a upper bound
+  appears in the computed IIS.
+</DD>
+</DL>
+
+<P>
+If your model contains SOS constraints the IIS struct will contain the
+following field:
+<DL>
+<DT><STRONG>sos</STRONG></DT>
+<DD>A logical vector that indicates whether an sos constraint
+  appears in the computed IIS
+</DD>
+</DL>
+
+<P>
+If your model contains cones or quadratic constraints the IIS struct
+will contain the following field:
+<DL>
+<DT><STRONG>qconstrs</STRONG></DT>
+<DD>A logical vector that indicates whether the cone or
+  quadratic constraint appears in the computed IIS.  Note that any
+  cones in the model will appear first in this vector, followed by the
+  quadratic constraints.
+</DD>
+</DL>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10979"
+  HREF="matlab_setting_up_the_guro.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10977"
+  HREF="matlab_computing_an_iis_wi.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10973"
+  HREF="matlab_computing_an_iis_wi.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10980"
+  HREF="matlab_setting_up_the_guro.html">Setting up the Gurobi</A>
+<B> Up:</B> <A NAME="tex2html10978"
+  HREF="matlab_computing_an_iis_wi.html">Computing an IIS with</A>
+<B> Previous:</B> <A NAME="tex2html10974"
+  HREF="matlab_computing_an_iis_wi.html">Computing an IIS with</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

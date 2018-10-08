@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Writing models with the Gurobi R interface</TITLE>
+<META NAME="description" CONTENT="Writing models with the Gurobi R interface">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="installing_the_r_package.html">
+<LINK REL="previous" HREF="solving_models_with_the_gu.html">
+<LINK REL="up" HREF="r_api_overview.html">
+<LINK REL="next" HREF="installing_the_r_package.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html11020"
+  HREF="installing_the_r_package.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11018"
+  HREF="r_api_overview.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11012"
+  HREF="solving_models_with_the_gu.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11021"
+  HREF="installing_the_r_package.html">Installing the R package</A>
+<B> Up:</B> <A NAME="tex2html11019"
+  HREF="r_api_overview.html">R API Overview</A>
+<B> Previous:</B> <A NAME="tex2html11013"
+  HREF="solving_models_with_the_gu.html">Solving models with the</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000122000000000000000"></A>
+<A NAME="r:writing"></A>
+<BR>
+Writing models with the Gurobi R interface
+</H2>
+
+<P>
+The Gurobi R interface also contains a routine that allows you to
+write an optimization model to a file:
+
+<P>
+
+<A NAME="rfunction:gurobi_write"></A><TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><BIG CLASS="LARGE"><FONT COLOR="#801a1a"> <SPAN  CLASS="textbf">gurobi_write</SPAN></FONT></BIG></TD>
+<TD ALIGN="LEFT">( model, filename )</TD>
+</TR>
+</TABLE>
+
+<P>
+<SPAN  CLASS="textbf">Arguments:</SPAN>
+
+<P>
+ <SPAN  CLASS="textbf">model</SPAN>: The model argument contains a valid Gurobi
+  model. See the <A HREF="solving_models_with_the_gu.html#r:solving">gurobi</A> function for a
+  description of model's required and optional components.
+
+<P>
+ <SPAN  CLASS="textbf">filename</SPAN>: Name of the file to write. Note that the type of
+  the file is encoded in the file name suffix. The filename suffix
+  should be one of .mps, .rew, .lp, .rlp, or .ilp, to indicate the
+  desired file format (see the <A HREF="model_file_formats.html#sec:FileFormats">file
+    formats</A> section for details on Gurobi file
+  formats). The files can be compressed, so additional suffixes of
+  .gz, .bz2, .zip, or .7z are accepted.
+
+<P>
+Below is an example that demonstrates how a model can be written to
+a file:
+<PRE>
+model &lt;- list()
+
+model$A          &lt;- matrix(c(1,1,0,0,1,1), nrow=2, byrow=T)
+model$obj        &lt;- c(1,1,2)
+model$modelsense &lt;- "max"
+model$rhs        &lt;- c(1,1)
+model$sense      &lt;- c('&lt;=', '&lt;=')
+
+gurobi_write(model, "mymodel.mps");
+gurobi_write(model, "mymodel.lp");
+gurobi_write(model, "mymodel.mps.bz2");
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html11020"
+  HREF="installing_the_r_package.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11018"
+  HREF="r_api_overview.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11012"
+  HREF="solving_models_with_the_gu.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11021"
+  HREF="installing_the_r_package.html">Installing the R package</A>
+<B> Up:</B> <A NAME="tex2html11019"
+  HREF="r_api_overview.html">R API Overview</A>
+<B> Previous:</B> <A NAME="tex2html11013"
+  HREF="solving_models_with_the_gu.html">Solving models with the</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

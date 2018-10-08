@@ -1,0 +1,407 @@
+\batchmode
+
+\documentclass{article}
+\RequirePackage{ifthen}
+
+
+\usepackage{html}
+\usepackage{graphicx}
+\usepackage{platform}%
+\providecommand{\GRBcMAYOR}{{7}}%
+\providecommand{\GRBcMINOR}{{5}}%
+\providecommand{\GRBcTECHNICAL}{{1}}%
+\providecommand{\GRBcYEAR}{{2017}}%
+\providecommand{\GRBcNUMBER}{{7}{5}{1}\ignorespaces}%
+\providecommand{\GRBcVERSION}{{7}.{5}.{1}\ignorespaces}%
+\providecommand{\GRBcBPATHL}{{\ttfamily/opt/gurobi{7}{5}{1}\ignorespaces /linux64}}%
+\providecommand{\GRBcBPATHM}{{\ttfamily/Library/gurobi{7}{5}{1}\ignorespaces /mac64}}%
+\providecommand{\GRBcMPATHW}{{\ttfamily{c:/gurobi{7}{5}{1}\ignorespaces /win64}}}%
+\providecommand{\GRBcBPATHW}{{\ttfamily{c:{\textbackslash}gurobi{7}{5}{1}\ignorespaces {\textbackslash}win64}}}%
+\providecommand{\GRBcBPATHWW}{{\ttfamily{c:{\textbackslash}gurobi{7}{5}{1}\ignorespaces {\textbackslash}win32}}}%
+\providecommand{\GRBcBPATHWF}{{\ttfamily{c:/gurobi{7}{5}{1}\ignorespaces /win64}}}%
+\providecommand{\GRBcMPATH}{\GRBplatform{{\ttfamily/opt/gurobi{7}{5}{1}\ignorespaces /linux64}}{{\ttfamily/Library/gurobi{7}{5}{1}\ignorespaces /mac64}}{{\ttfamily{c:/gurobi{7}{5}{1}\ignorespaces /win64}}}\ignorespaces}%
+\providecommand{\GRBcBPATH}{\GRBplatform{{\ttfamily/opt/gurobi{7}{5}{1}\ignorespaces /linux64}}{{\ttfamily/Library/gurobi{7}{5}{1}\ignorespaces /mac64}}{{\ttfamily{c:{\textbackslash}gurobi{7}{5}{1}\ignorespaces {\textbackslash}win64}}}\ignorespaces}%
+\providecommand{\GRBcDPATHL}{{\ttfamily/examples/data/}}%
+\providecommand{\GRBcDPATHM}{{\ttfamily/examples/data/}}%
+\providecommand{\GRBcDPATHW}{{\ttfamily{\textbackslash}examples{\textbackslash}data{\textbackslash}}}%
+\providecommand{\GRBcDPATH}{\GRBplatform{{\ttfamily/examples/data/}}{{\ttfamily/examples/data/}}{{\ttfamily{\textbackslash}examples{\textbackslash}data{\textbackslash}}}\ignorespaces}%
+\providecommand{\GRBcOS}{\GRBplatform{Linux}{Mac}{64-bit Windows}\ignorespaces}%
+\providecommand{\pythonname}{%
+Note that \texttt{name} will be stored as an ASCII string.  Thus, a name
+like {\texttt 'A${\rightarrow}$B'} will produce an error, because
+'${\rightarrow}$' can not be represented as an ASCII character.  Note
+also that names that contain spaces are strongly discouraged,
+because they can't be written to LP format files.} 
+
+%
+\providecommand{\pythonnames}{%
+The given name will be subscripted by the index of the generator
+expression, so if the index is an integer, \texttt{c} would become
+\texttt{c[0]}, \texttt{c[1]}, etc.
+Note that the generated names will be stored as ASCII strings, so you
+should avoid using names that contain non-ASCII characters.  In
+addition, names that contain spaces are strongly discouraged, because
+they can't be written to LP format files.} 
+
+%
+\providecommand{\getmultiobjenvdesc}{%
+Create/retrieve a multi-objective
+environment for the objective with the given index.  This
+environment enables fine-grained control over the multi-objective
+optimization process.  Specifically, by changing parameters on this
+environment, you modify the behavior of the optimization that
+occurs during the corresponding pass of the multi-objective
+optimization.
+
+
+Each multi-objective environment starts with a copy of the current
+model environment.
+
+
+Please refer to the discussion of
+\hyperref{Multiple Objectives}{}{}{sec:MultipleObjectives} for
+information on how to specify multiple objective functions and control
+the tradeoff between them.} 
+
+%
+\providecommand{\discardmultiobjenvsdesc}{%
+Discard all multi-objective environments associated with the model,
+thus restoring multi objective optimization to its default behavior.
+
+
+Please refer to the discussion of
+\hyperref{Multiple Objectives}{}{}{sec:MultipleObjectives} for
+information on how to specify multiple objective functions and control
+the tradeoff between them.} 
+
+%
+\providecommand{\pythonlazynote}{%
+  Note that, due to our lazy update approach, the change won't actually
+  take effect until you update the model
+  (using \hyperref{Model.update}{}{}{pythonmethod:Model.update}),
+  optimize the model
+  (using \hyperref{Model.optimize}{}{}{pythonmethod:Model.optimize}),
+  or write the model to disk
+  (using \hyperref{Model.write}{}{}{pythonmethod:Model.write}).} 
+
+%
+\providecommand{\dotnetlazynote}{%
+  Note that, due to our lazy update approach, the change won't actually
+  take effect until you update the model
+  (using \hyperref{GRBModel.Update}{}{}{dotnetmethod:GRBModel.Update}),
+  optimize the model
+  (using \hyperref{GRBModel.Optimize}{}{}{dotnetmethod:GRBModel.Optimize}),
+  or write the model to disk
+  (using \hyperref{GRBModel.Write}{}{}{dotnetmethod:GRBModel.Write}).} 
+
+%
+\providecommand{\javalazynote}{%
+  Note that, due to our lazy update approach, the change won't actually
+  take effect until you update the model
+  (using \hyperref{GRBModel.update}{}{}{javamethod:GRBModel.update}),
+  optimize the model
+  (using \hyperref{GRBModel.optimize}{}{}{javamethod:GRBModel.optimize}),
+  or write the model to disk
+  (using \hyperref{GRBModel.write}{}{}{javamethod:GRBModel.write}).} 
+
+%
+\providecommand{\cpplazynote}{%
+  Note that, due to our lazy update approach, the change won't actually
+  take effect until you update the model
+  (using \hyperref{GRBModel::update}{}{}{cppmethod:GRBModel::update}),
+  optimize the model
+  (using \hyperref{GRBModel::optimize}{}{}{cppmethod:GRBModel::optimize}),
+  or write the model to disk
+  (using \hyperref{GRBModel::write}{}{}{cppmethod:GRBModel::write}).} 
+
+%
+\providecommand{\clazynote}[2]{
+  Note that, due to our lazy update approach, the #1 won't actually be #2
+  until you update the model
+  (using \hyperref{GRBupdatemodel}{}{}{routine:GRBupdatemodel}),
+  optimize the model
+  (using \hyperref{GRBoptimize}{}{}{routine:GRBoptimize}),
+  or write the model to disk
+  (using \hyperref{GRBwrite}{}{}{routine:GRBwrite}).} 
+
+%
+\providecommand{\parameterpointer}{
+Please consult the \hyperref{parameter section}{}{}{sec:Parameters}
+for a complete list of Gurobi parameters, including descriptions of
+their purposes and their minimum, maximum, and default values.} 
+
+%
+\providecommand{\heading}[1]{{\large \textbf{#1}}}%
+\providecommand{\subheading}[1]{\textbf{#1}}%
+\providecommand{\routine}[1]{{\em #1()\/}}%
+\providecommand{\vurb}[1]{\texttt{#1}} 
+
+
+
+\setlength{\parindent}{0cm} 
+
+
+
+
+\usepackage[dvips]{color}
+
+
+\pagecolor[gray]{.7}
+
+\usepackage[latin1]{inputenc}
+
+
+
+\makeatletter
+
+\makeatletter
+\count@=\the\catcode`\_ \catcode`\_=8 
+\newenvironment{tex2html_wrap}{}{}%
+\catcode`\<=12\catcode`\_=\count@
+\newcommand{\providedcommand}[1]{\expandafter\providecommand\csname #1\endcsname}%
+\newcommand{\renewedcommand}[1]{\expandafter\providecommand\csname #1\endcsname{}%
+  \expandafter\renewcommand\csname #1\endcsname}%
+\newcommand{\newedenvironment}[1]{\newenvironment{#1}{}{}\renewenvironment{#1}}%
+\let\newedcommand\renewedcommand
+\let\renewedenvironment\newedenvironment
+\makeatother
+\let\mathon=$
+\let\mathoff=$
+\ifx\AtBeginDocument\undefined \newcommand{\AtBeginDocument}[1]{}\fi
+\newbox\sizebox
+\setlength{\hoffset}{0pt}\setlength{\voffset}{0pt}
+\addtolength{\textheight}{\footskip}\setlength{\footskip}{0pt}
+\addtolength{\textheight}{\topmargin}\setlength{\topmargin}{0pt}
+\addtolength{\textheight}{\headheight}\setlength{\headheight}{0pt}
+\addtolength{\textheight}{\headsep}\setlength{\headsep}{0pt}
+\setlength{\textwidth}{349pt}
+\newwrite\lthtmlwrite
+\makeatletter
+\let\realnormalsize=\normalsize
+\global\topskip=2sp
+\def\preveqno{}\let\real@float=\@float \let\realend@float=\end@float
+\def\@float{\let\@savefreelist\@freelist\real@float}
+\def\liih@math{\ifmmode$\else\bad@math\fi}
+\def\end@float{\realend@float\global\let\@freelist\@savefreelist}
+\let\real@dbflt=\@dbflt \let\end@dblfloat=\end@float
+\let\@largefloatcheck=\relax
+\let\if@boxedmulticols=\iftrue
+\def\@dbflt{\let\@savefreelist\@freelist\real@dbflt}
+\def\adjustnormalsize{\def\normalsize{\mathsurround=0pt \realnormalsize
+ \parindent=0pt\abovedisplayskip=0pt\belowdisplayskip=0pt}%
+ \def\phantompar{\csname par\endcsname}\normalsize}%
+\def\lthtmltypeout#1{{\let\protect\string \immediate\write\lthtmlwrite{#1}}}%
+\newcommand\lthtmlhboxmathA{\adjustnormalsize\setbox\sizebox=\hbox\bgroup\kern.05em }%
+\newcommand\lthtmlhboxmathB{\adjustnormalsize\setbox\sizebox=\hbox to\hsize\bgroup\hfill }%
+\newcommand\lthtmlvboxmathA{\adjustnormalsize\setbox\sizebox=\vbox\bgroup %
+ \let\ifinner=\iffalse \let\)\liih@math }%
+\newcommand\lthtmlboxmathZ{\@next\next\@currlist{}{\def\next{\voidb@x}}%
+ \expandafter\box\next\egroup}%
+\newcommand\lthtmlmathtype[1]{\gdef\lthtmlmathenv{#1}}%
+\newcommand\lthtmllogmath{\dimen0\ht\sizebox \advance\dimen0\dp\sizebox
+  \ifdim\dimen0>.95\vsize
+   \lthtmltypeout{%
+*** image for \lthtmlmathenv\space is too tall at \the\dimen0, reducing to .95 vsize ***}%
+   \ht\sizebox.95\vsize \dp\sizebox\z@ \fi
+  \lthtmltypeout{l2hSize %
+:\lthtmlmathenv:\the\ht\sizebox::\the\dp\sizebox::\the\wd\sizebox.\preveqno}}%
+\newcommand\lthtmlfigureA[1]{\let\@savefreelist\@freelist
+       \lthtmlmathtype{#1}\lthtmlvboxmathA}%
+\newcommand\lthtmlpictureA{\bgroup\catcode`\_=8 \lthtmlpictureB}%
+\newcommand\lthtmlpictureB[1]{\lthtmlmathtype{#1}\egroup
+       \let\@savefreelist\@freelist \lthtmlhboxmathB}%
+\newcommand\lthtmlpictureZ[1]{\hfill\lthtmlfigureZ}%
+\newcommand\lthtmlfigureZ{\lthtmlboxmathZ\lthtmllogmath\copy\sizebox
+       \global\let\@freelist\@savefreelist}%
+\newcommand\lthtmldisplayA{\bgroup\catcode`\_=8 \lthtmldisplayAi}%
+\newcommand\lthtmldisplayAi[1]{\lthtmlmathtype{#1}\egroup\lthtmlvboxmathA}%
+\newcommand\lthtmldisplayB[1]{\edef\preveqno{(\theequation)}%
+  \lthtmldisplayA{#1}\let\@eqnnum\relax}%
+\newcommand\lthtmldisplayZ{\lthtmlboxmathZ\lthtmllogmath\lthtmlsetmath}%
+\newcommand\lthtmlinlinemathA{\bgroup\catcode`\_=8 \lthtmlinlinemathB}
+\newcommand\lthtmlinlinemathB[1]{\lthtmlmathtype{#1}\egroup\lthtmlhboxmathA
+  \vrule height1.5ex width0pt }%
+\newcommand\lthtmlinlineA{\bgroup\catcode`\_=8 \lthtmlinlineB}%
+\newcommand\lthtmlinlineB[1]{\lthtmlmathtype{#1}\egroup\lthtmlhboxmathA}%
+\newcommand\lthtmlinlineZ{\egroup\expandafter\ifdim\dp\sizebox>0pt %
+  \expandafter\centerinlinemath\fi\lthtmllogmath\lthtmlsetinline}
+\newcommand\lthtmlinlinemathZ{\egroup\expandafter\ifdim\dp\sizebox>0pt %
+  \expandafter\centerinlinemath\fi\lthtmllogmath\lthtmlsetmath}
+\newcommand\lthtmlindisplaymathZ{\egroup %
+  \centerinlinemath\lthtmllogmath\lthtmlsetmath}
+\def\lthtmlsetinline{\hbox{\vrule width.1em \vtop{\vbox{%
+  \kern.1em\copy\sizebox}\ifdim\dp\sizebox>0pt\kern.1em\else\kern.3pt\fi
+  \ifdim\hsize>\wd\sizebox \hrule depth1pt\fi}}}
+\def\lthtmlsetmath{\hbox{\vrule width.1em\kern-.05em\vtop{\vbox{%
+  \kern.1em\kern0.8 pt\hbox{\hglue.17em\copy\sizebox\hglue0.8 pt}}\kern.3pt%
+  \ifdim\dp\sizebox>0pt\kern.1em\fi \kern0.8 pt%
+  \ifdim\hsize>\wd\sizebox \hrule depth1pt\fi}}}
+\def\centerinlinemath{%
+  \dimen1=\ifdim\ht\sizebox<\dp\sizebox \dp\sizebox\else\ht\sizebox\fi
+  \advance\dimen1by.5pt \vrule width0pt height\dimen1 depth\dimen1 
+ \dp\sizebox=\dimen1\ht\sizebox=\dimen1\relax}
+
+\def\lthtmlcheckvsize{\ifdim\ht\sizebox<\vsize 
+  \ifdim\wd\sizebox<\hsize\expandafter\hfill\fi \expandafter\vfill
+  \else\expandafter\vss\fi}%
+\providecommand{\selectlanguage}[1]{}%
+\makeatletter \tracingstats = 1 
+
+
+\begin{document}
+\pagestyle{empty}\thispagestyle{empty}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength hsize=\the\hsize}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength vsize=\the\vsize}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength hoffset=\the\hoffset}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength voffset=\the\voffset}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength topmargin=\the\topmargin}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength topskip=\the\topskip}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength headheight=\the\headheight}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength headsep=\the\headsep}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength parskip=\the\parskip}\lthtmltypeout{}%
+\lthtmltypeout{latex2htmlLength oddsidemargin=\the\oddsidemargin}\lthtmltypeout{}%
+\makeatletter
+\if@twoside\lthtmltypeout{latex2htmlLength evensidemargin=\the\evensidemargin}%
+\else\lthtmltypeout{latex2htmlLength evensidemargin=\the\oddsidemargin}\fi%
+\lthtmltypeout{}%
+\makeatother
+\setcounter{page}{1}
+\onecolumn
+
+% !!! IMAGES START HERE !!!
+
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{section}
+\stepcounter{section}
+
+%
+\providecommand{\nonetwork}{If your computer isn't connected to the
+Internet or if your network security system does not allow the command
+below to function, we also offer a manual license key process.  You'll
+find manual instructions at the bottom of the License Detail page (by
+following the link labeled {\em click here for additional
+instructions\/}).}%
+
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsubsection}
+\stepcounter{subsubsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_inline3387}%
+$\leq$%
+\lthtmlinlinemathZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_inline3389}%
+$\geq$%
+\lthtmlinlinemathZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_inline3391}%
+$c'x$%
+\lthtmlinlinemathZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_inline3393}%
+$-c'x$%
+\lthtmlinlinemathZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_inline3395}%
+$x + 2y + 3z \leq 4$%
+\lthtmlinlinemathZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_inline3397}%
+$x$%
+\lthtmlinlinemathZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_inline3399}%
+$y$%
+\lthtmlinlinemathZ
+\lthtmlcheckvsize\clearpage}
+
+{\newpage\clearpage
+\lthtmlinlinemathA{tex2html_wrap_inline3401}%
+$z$%
+\lthtmlinlinemathZ
+\lthtmlcheckvsize\clearpage}
+
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{section}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{subsection}
+\stepcounter{section}
+\stepcounter{section}
+
+\end{document}

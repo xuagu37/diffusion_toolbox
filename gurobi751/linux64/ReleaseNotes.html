@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Gurobi Optimization</title>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+	<style type="text/css">
+	body {
+		background-color: #E7E9EB;
+		padding: 20px 40px;
+		font-family: Helvetica, Arial, sans-serif;
+		font-size:11pt;
+		line-height:20px;
+		margin:0px;
+	}
+	img {
+		border: none;
+	}
+	h2 {
+		margin: 36px 0 8px;
+	}
+	.menu {
+		padding-bottom: 40px;
+	}
+	.menu td {
+		padding-right: 30px;
+		font-size: 14pt;
+		font-weight: bold;
+	}
+	.menu a {
+		text-decoration: none;
+		color: #292929;
+	}
+	.menu a:hover {
+		color: #909090;
+	}
+	.platforms {
+		border-collapse: collapse;
+	}
+	.platforms td, .platforms th {
+		font-size: 10pt;
+		border: solid 1px black;
+		padding: 4px 8px;
+		text-align: left;
+	}
+	</style>
+</head>
+<body>
+<table class='menu'>
+	<tr>
+		<td><a href="http://www.gurobi.com"><img style='width:211px' src="docs/logo.png" alt="Gurobi Optimization" title="Gurobi Optimization" /></a></td>
+		<td><a href="http://www.gurobi.com">gurobi.com</a></td>
+		<td><a href="docs/refman/refman.html">Reference Manual</a></td>
+		<td><a href="mailto:support@gurobi.com">Customer Support</a></td>
+	</tr>
+</table>
+<h1>
+	WELCOME
+</h1>
+<p>
+	You have successfully installed version 7.5 of the Gurobi Optimizer.
+</p>
+<p>
+	You'll find instructions for setting up your Gurobi license in this document, as well as a list of supported platforms, and Release Notes and guidelines for converting existing Gurobi code to run with this new version. Once you have finished browsing this document, you should refer to the <a href="docs/quickstart/quickstart.html">Quick Start Guide</a>, the <a href="docs/examples/examples.html">Example Tour</a>, or the <a href="docs/refman/refman.html">Reference Manual</a> to get started using the Gurobi Optimizer.
+</p>
+<h2>
+	Obtaining Your License
+</h2>
+<p>
+Gurobi Optimizer 7.5 uses the same licenses as version 7.0, so if you already have a Gurobi 7 license, there's no need to obtain a new one.  If you don't already have a Gurobi 7 license, you will need to visit the <a href="http://www.gurobi.com/downloads/licenses/license-center" target="_blank"> Gurobi License Center</a>. If you are a commercial user under maintenance, you should see your Gurobi 7 license under <a href="http://www.gurobi.com/download/licenses/current">Current Gurobi Licenses</a>.  If you would like to request a free academic license, you can do so from the <a href="http://www.gurobi.com/download/licenses/free-academic">Free Academic License</a> page. Once you have a license on the Gurobi web site, you will need to follow the instructions for installing a license in the <a href="docs/quickstart/quickstart.html">Quick Start Guide</a>.
+</p>
+<h2>
+	Supported Platforms for Version 7.5
+</h2>
+<p>
+	The following table lists the supported platforms for version 7.5:
+</p>
+<table class='platforms'>
+	<tr>
+		<th>Platform</th>
+		<th>Operating System</th>
+		<th>Compiler</th>
+		<th>Notes</th>
+	</tr>
+	<tr>
+		<td rowspan="2">Windows&reg; 32-bit (win32)</td>
+		<td>Windows 7, Windows 8.1, Windows 10</td>
+		<td>Visual Studio&reg; 2015</td>
+		<td>Use gurobi_c++md2015.lib (e.g.) for C++</td>
+	</tr>
+	<tr>
+		<td>Windows 7, Windows 8.1, Windows 10</td>
+		<td>Visual Studio 2017</td>
+		<td>Use gurobi_c++md2017.lib (e.g.) for C++</td>
+	</tr>
+	<tr>
+		<td rowspan="2">Windows 64-bit (win64)</td>
+		<td>Windows 7, Windows 8.1, Windows 10, Windows Server 2008 R2, Windows Server 2012 R2, Windows Server 2016</td>
+		<td>Visual Studio 2015</td>
+		<td>Use gurobi_c++md2015.lib (e.g.) for C++</td>
+	</tr>
+	<tr>
+		<td>Windows 7, Windows 8.1, Windows 10, Windows Server 2008 R2, Windows Server 2012 R2, Windows Server 2016</td>
+		<td>Visual Studio 2017</td>
+		<td>Use gurobi_c++md2017.lib (e.g.) for C++</td>
+	</tr>
+	<tr>
+		<td rowspan="3">Linux&reg; x86-64 64-bit (linux64)</td>
+		<td>Red Hat&reg; Enterprise Linux 6.7-6.9, 7.2-7.3</td>
+		<td>GCC 4.4/4.8</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>SUSE&reg; Enterprise Linux 11, 12</td>
+		<td>GCC 4.3/4.4/4.8</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Ubuntu&reg; 14.04, 16.04, 16.10, 17.04</td>
+		<td>GCC 4.6/4.8</td>
+		<td>Use libgurobi_g++5.2.a for C++ in Ubuntu 16.04, 16.10, and 17.04</td>
+	</tr>
+	<tr>
+		<td>Mac OS 64-bit (mac64)</td>
+		<td>Mac OS X 10.11 (El Capitan), 10.12 (Sierra)</td>
+		<td>Xcode 7/8</td>
+		<td>Use libgurobi_stdc++.a for -stdlib=libstdc++ in C++</td>
+	</tr>
+	<tr>
+		<td>AIX&reg; 64-bit (power64)</td>
+		<td>AIX 7.1</td>
+		<td>XL C/C++ 9</td>
+		<td>Due to limited Python support on AIX, this port does not include the Interactive Shell or the Python libraries.</td>
+	</tr>
+</table>
+<p>
+	Our Python&reg; interface supports Python versions 2.7 and 3.6.  Our MATLAB&reg; interface supports MATLAB versions 2013a through 2017a. Our R interface supports R version 3.4.
+</p>
+<p>
+</p>
+<h2>
+	Release Notes for Version 7.5
+</h2>
+<p>
+	In addition to significant performance enhancements, Gurobi 7.5 adds several new features:
+</p>
+<ul>
+  <li><b>Python modeling enhancements:</b>
+    Our Python modeling interface has been extended to further simplify
+    the task of translating mathematical models into efficient
+    implementations.  This version contains new, simplified syntax
+    for specifying general constraints (min, max, abs, and, or, and
+    indicator), and for range constraints.
+    For more information, see the
+    <a href="docs/refman/py_python_api_overview.html">Python API Overview</a>
+    section in the Reference Manual.
+  </li>
+  <li><b>Simplified multi-objective interface:</b>
+    Our multi-objective interface has been greatly simplified.
+    You can now specify objectives through a single
+    <b>setObjectiveN</b> routine.
+    For an overview see the
+    <a href="docs/refman/multiple_objectives.html">Multiple Objectives</a>
+    section in the Reference Manual.
+  </li>
+  <li><b>Enhanced multi-objective control:</b>
+    Our new <i>multi-objective environments</i> feature allows you to
+    set termination parameters for each pass of the
+    multi-objective optimization algorithm separately.
+    For an overview see the
+    <a href="docs/refman/multiple_objectives.html">Multiple Objectives</a>
+    section in the Reference Manual.
+  </li>
+  <li><b>Fewer constraint violations in MIQP solutions:</b>
+    We have tightened our internal tolerances for MIQP models to
+    reduce the number of cases where the solution exhibits
+    small constraint violations.
+  </li>
+  <li><b>Compute Server communication statistics:</b>
+    Compute Server now displays detailed communication statistics,
+    including the number of messages sent, the total network traffic generated,
+    and the amount of time spent exchanging this data.
+  </li>
+  <li><b>JavaDoc documentation:</b>
+          Our Java interface now includes a JavaDoc version of our
+          documentation.
+	<li><b>Support for Python 3.6:</b> We've added support for Python 3.6 (including Anaconda 3.6).</li>
+	<li><b>Support for Visual Studio 2017:</b> We've added support for Visual Studio 2017 on Windows.</li>
+  <li><b>New parameters:</b><ul>
+    <li><a href="docs/refman/ignorenames.html"><b>IgnoreNames:</b></a> Ignores user-provided variable and constraint names.</li>
+    <li><a href="docs/refman/startnodelimit.html"><b>StartNodeLimit:</b></a> Provides additional control over how much work is performed to complete a partial MIP start.</li>
+  </ul></li>
+</ul>
+<h2>
+	Code Conversion from Version 7.0
+</h2>
+<p>
+Programs that were originally written for version 7.0 of the Gurobi Optimizer generally won't require any code changes to use version 7.5.  If you'd like to use the new features, some code changes are required.
+</p>
+<h2>
+  Future Deprecated Platforms
+</h2>
+<p>
+Gurobi 7.5 will be the last Gurobi release that supports 32-bit Windows (win32).
+You should plan to migrate your applications to 64-bit Windows (win64) in the future.
+</p>
+<h2>
+	License Agreement
+</h2>
+<p>
+	Note that this software is covered by the <a href="EULA.pdf">Gurobi End User License Agreement</a>. By completing the Gurobi installation process and using the software, you are accepting the terms of this agreement.
+</p>
+<p>
+	Thank you for using Gurobi products!
+</p>
+<hr />
+<p>
+	&copy; 2017 Gurobi Optimization. All Rights Reserved.
+</p>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Installing the R package</TITLE>
+<META NAME="description" CONTENT="Installing the R package">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="previous" HREF="writing_models_with_the_gu.html">
+<LINK REL="up" HREF="r_api_overview.html">
+<LINK REL="next" HREF="variables_and_constraints.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html11028"
+  HREF="variables_and_constraints.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11026"
+  HREF="r_api_overview.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11022"
+  HREF="writing_models_with_the_gu.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11029"
+  HREF="variables_and_constraints.html">Variables and Constraints</A>
+<B> Up:</B> <A NAME="tex2html11027"
+  HREF="r_api_overview.html">R API Overview</A>
+<B> Previous:</B> <A NAME="tex2html11023"
+  HREF="writing_models_with_the_gu.html">Writing models with the</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000123000000000000000"></A>
+<A NAME="r:installing"></A>
+<BR>
+Installing the R package
+</H2>
+
+<P>
+To use our R interface, you'll need to install the Gurobi package in
+your local R installation.  The R command for doing this is:
+<PRE>
+install.packages('&lt;R-package-file&gt;', repos=NULL)
+</PRE>
+The Gurobi R package file can be found in the <code>&lt;installdir&gt;/R</code>
+directory of your Gurobi installation
+(the default <code>&lt;installdir&gt;</code> for Gurobi 7.5.1 is <TT>/opt/gurobi751/linux64</TT> for Linux,
+<TT>c:&#92;gurobi751&#92;win64</TT> for 64-bit Windows, and <TT>/Library/gurobi751/mac64</TT> for Mac).
+You should browse the <code>&lt;installdir&gt;/R</code> directory to find
+the exact name of the file for your platform
+(the Linux package is in file
+<code>gurobi_</code><TT>7.5-1</TT><code>_R_x86_64-pc-linux-gnu.tar.gz</code>,
+the Windows package is in file
+<code>gurobi_</code><TT>7.5-1.zip</TT>, and the Mac package is in file
+<code>gurobi_</code><TT>7.5-1.tgz</TT>).
+
+<P>
+You will need to be careful to make sure that the R binary and the
+Gurobi package you install both use the same instruction set.  For
+example, if you are using the 64-bit version of R, you'll need to
+install the 64-bit version of Gurobi, and the 64-bit Gurobi R package.
+This is particularly important on Windows systems, where the error
+messages that result from instruction set mismatches can be quite
+cryptic.
+
+<P>
+To run one of the R examples provided with the Gurobi distribution,
+you can use the <code>source</code> command in R.  For example, if you
+are running R from the Gurobi R examples directory, you can say:
+<PRE>
+&gt; source('mip.R')
+</PRE>
+
+<P>
+If the Gurobi package was successfully installed, you should see the
+following output:
+<PRE>
+[1] "Solution:"
+[1] 3
+[1] 1 0 1
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html11028"
+  HREF="variables_and_constraints.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html11026"
+  HREF="r_api_overview.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html11022"
+  HREF="writing_models_with_the_gu.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html11029"
+  HREF="variables_and_constraints.html">Variables and Constraints</A>
+<B> Up:</B> <A NAME="tex2html11027"
+  HREF="r_api_overview.html">R API Overview</A>
+<B> Previous:</B> <A NAME="tex2html11023"
+  HREF="writing_models_with_the_gu.html">Writing models with the</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Computing an IIS with the Gurobi MATLAB interface</TITLE>
+<META NAME="description" CONTENT="Computing an IIS with the Gurobi MATLAB interface">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="matlab_setting_up_the_guro.html">
+<LINK REL="previous" HREF="matlab_reading_and_writing.html">
+<LINK REL="up" HREF="matlab_api_overview.html">
+<LINK REL="next" HREF="matlab_gurobi_iis.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html10970"
+  HREF="matlab_gurobi_iis.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10968"
+  HREF="matlab_api_overview.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10962"
+  HREF="matlab_gurobi_write.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10971"
+  HREF="matlab_gurobi_iis.html">gurobi_iis()</A>
+<B> Up:</B> <A NAME="tex2html10969"
+  HREF="matlab_api_overview.html">MATLAB API Overview</A>
+<B> Previous:</B> <A NAME="tex2html10963"
+  HREF="matlab_gurobi_write.html">gurobi_write()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000113000000000000000">
+Computing an IIS with the Gurobi MATLAB interface</A>
+</H2>
+
+<P>
+The MATLAB interface contains a function to compute an IIS.
+An IIS is a subset of the constraints and variable bounds with the following properties:
+
+<UL>
+<LI>the subsystem represented by the IIS is infeasible, and
+</LI>
+<LI>if any of the constraints or bounds of the IIS is removed, the subsystem becomes feasible.
+</LI>
+</UL>
+Note that an infeasible model may have multiple IISs. The one returned by Gurobi is not necessarily one of minimal cardinality. Thus, there may exist other IISs with fewer constraints or bounds.
+
+<P>
+If an IIS computation is interrupted before completion, Gurobi will internally store the best available IIS found so far.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html10972"
+  HREF="matlab_gurobi_iis.html">gurobi_iis()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html10970"
+  HREF="matlab_gurobi_iis.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html10968"
+  HREF="matlab_api_overview.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html10962"
+  HREF="matlab_gurobi_write.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html10971"
+  HREF="matlab_gurobi_iis.html">gurobi_iis()</A>
+<B> Up:</B> <A NAME="tex2html10969"
+  HREF="matlab_api_overview.html">MATLAB API Overview</A>
+<B> Previous:</B> <A NAME="tex2html10963"
+  HREF="matlab_gurobi_write.html">gurobi_write()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>

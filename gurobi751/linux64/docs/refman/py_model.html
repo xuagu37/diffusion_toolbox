@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Model</TITLE>
+<META NAME="description" CONTENT="Model">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="py_var.html">
+<LINK REL="previous" HREF="py_global_functions.html">
+<LINK REL="up" HREF="py_python_api_details.html">
+<LINK REL="next" HREF="py_model2.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html9125"
+  HREF="py_model2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9123"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9117"
+  HREF="py_writeparams.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9126"
+  HREF="py_model2.html">Model()</A>
+<B> Up:</B> <A NAME="tex2html9124"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html9118"
+  HREF="py_writeparams.html">writeParams()</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000102000000000000000"></A>
+<A NAME="pythonclass:Model"></A>
+<BR>
+Model
+</H2>
+
+<P>
+Gurobi model object.  Commonly used methods on the model object in the
+Gurobi shell include
+<A HREF="py_model_optimize.html#pythonmethod:Model.optimize">optimize</A> (optimizes the
+model), <A HREF="py_model_printstats.html#pythonmethod:Model.printStats">printStats</A>
+(prints statistics about the model),
+<A HREF="py_model_printattr.html#pythonmethod:Model.printAttr">printAttr</A> (prints the
+values of an attribute), and
+<A HREF="py_model_write.html#pythonmethod:Model.write">write</A> (writes information
+about the model to a file).  Commonly used methods when building a
+model include
+<A HREF="py_model_addvar.html#pythonmethod:Model.addVar">addVar</A> (adds a new variable),
+<A HREF="py_model_addvars.html#pythonmethod:Model.addVars">addVars</A> (adds multiple new variables),
+<A HREF="py_model_addconstr.html#pythonmethod:Model.addConstr">addConstr</A> (adds a new constraint),
+and
+<A HREF="py_model_addconstrs.html#pythonmethod:Model.addConstrs">addConstrs</A> (adds multiple new constraints).
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html9127"
+  HREF="py_model2.html">Model()</A>
+<LI><A NAME="tex2html9128"
+  HREF="py_model_addconstr.html">Model.addConstr()</A>
+<LI><A NAME="tex2html9129"
+  HREF="py_model_addconstrs.html">Model.addConstrs()</A>
+<LI><A NAME="tex2html9130"
+  HREF="py_model_addgenconstrxxx.html">Model.addGenConstrXxx()</A>
+<LI><A NAME="tex2html9131"
+  HREF="py_model_addgenconstrmax.html">Model.addGenConstrMax()</A>
+<LI><A NAME="tex2html9132"
+  HREF="py_model_addgenconstrmin.html">Model.addGenConstrMin()</A>
+<LI><A NAME="tex2html9133"
+  HREF="py_model_addgenconstrabs.html">Model.addGenConstrAbs()</A>
+<LI><A NAME="tex2html9134"
+  HREF="py_model_addgenconstrand.html">Model.addGenConstrAnd()</A>
+<LI><A NAME="tex2html9135"
+  HREF="py_model_addgenconstror.html">Model.addGenConstrOr()</A>
+<LI><A NAME="tex2html9136"
+  HREF="py_model_addgenconstrindic.html">Model.addGenConstrIndicator()</A>
+<LI><A NAME="tex2html9137"
+  HREF="py_model_addqconstr.html">Model.addQConstr()</A>
+<LI><A NAME="tex2html9138"
+  HREF="py_model_addrange.html">Model.addRange()</A>
+<LI><A NAME="tex2html9139"
+  HREF="py_model_addsos.html">Model.addSOS()</A>
+<LI><A NAME="tex2html9140"
+  HREF="py_model_addvar.html">Model.addVar()</A>
+<LI><A NAME="tex2html9141"
+  HREF="py_model_addvars.html">Model.addVars()</A>
+<LI><A NAME="tex2html9142"
+  HREF="py_model_cbcut.html">Model.cbCut()</A>
+<LI><A NAME="tex2html9143"
+  HREF="py_model_cbget.html">Model.cbGet()</A>
+<LI><A NAME="tex2html9144"
+  HREF="py_model_cbgetnoderel.html">Model.cbGetNodeRel()</A>
+<LI><A NAME="tex2html9145"
+  HREF="py_model_cbgetsolution.html">Model.cbGetSolution()</A>
+<LI><A NAME="tex2html9146"
+  HREF="py_model_cblazy.html">Model.cbLazy()</A>
+<LI><A NAME="tex2html9147"
+  HREF="py_model_cbsetsolution.html">Model.cbSetSolution()</A>
+<LI><A NAME="tex2html9148"
+  HREF="py_model_cbusesolution.html">Model.cbUseSolution()</A>
+<LI><A NAME="tex2html9149"
+  HREF="py_model_chgcoeff.html">Model.chgCoeff()</A>
+<LI><A NAME="tex2html9150"
+  HREF="py_model_computeiis.html">Model.computeIIS()</A>
+<LI><A NAME="tex2html9151"
+  HREF="py_model_copy.html">Model.copy()</A>
+<LI><A NAME="tex2html9152"
+  HREF="py_model_discardconcurrent.html">Model.discardConcurrentEnvs()</A>
+<LI><A NAME="tex2html9153"
+  HREF="py_model_discardmultiobjen.html">Model.discardMultiobjEnvs()</A>
+<LI><A NAME="tex2html9154"
+  HREF="py_model_feasrelaxs.html">Model.feasRelaxS()</A>
+<LI><A NAME="tex2html9155"
+  HREF="py_model_feasrelax.html">Model.feasRelax()</A>
+<LI><A NAME="tex2html9156"
+  HREF="py_model_fixed.html">Model.fixed()</A>
+<LI><A NAME="tex2html9157"
+  HREF="py_model_getattr.html">Model.getAttr()</A>
+<LI><A NAME="tex2html9158"
+  HREF="py_model_getcoeff.html">Model.getCoeff()</A>
+<LI><A NAME="tex2html9159"
+  HREF="py_model_getcol.html">Model.getCol()</A>
+<LI><A NAME="tex2html9160"
+  HREF="py_model_getconcurrentenv.html">Model.getConcurrentEnv()</A>
+<LI><A NAME="tex2html9161"
+  HREF="py_model_getconstrbyname.html">Model.getConstrByName()</A>
+<LI><A NAME="tex2html9162"
+  HREF="py_model_getconstrs.html">Model.getConstrs()</A>
+<LI><A NAME="tex2html9163"
+  HREF="py_model_getgenconstrmax.html">Model.getGenConstrMax()</A>
+<LI><A NAME="tex2html9164"
+  HREF="py_model_getgenconstrmin.html">Model.getGenConstrMin()</A>
+<LI><A NAME="tex2html9165"
+  HREF="py_model_getgenconstrabs.html">Model.getGenConstrAbs()</A>
+<LI><A NAME="tex2html9166"
+  HREF="py_model_getgenconstrand.html">Model.getGenConstrAnd()</A>
+<LI><A NAME="tex2html9167"
+  HREF="py_model_getgenconstror.html">Model.getGenConstrOr()</A>
+<LI><A NAME="tex2html9168"
+  HREF="py_model_getgenconstrindic.html">Model.getGenConstrIndicator()</A>
+<LI><A NAME="tex2html9169"
+  HREF="py_model_getgenconstrs.html">Model.getGenConstrs()</A>
+<LI><A NAME="tex2html9170"
+  HREF="py_model_getmultiobjenv.html">Model.getMultiobjEnv()</A>
+<LI><A NAME="tex2html9171"
+  HREF="py_model_getobjective.html">Model.getObjective()</A>
+<LI><A NAME="tex2html9172"
+  HREF="py_model_getparaminfo.html">Model.getParamInfo()</A>
+<LI><A NAME="tex2html9173"
+  HREF="py_model_getpwlobj.html">Model.getPWLObj()</A>
+<LI><A NAME="tex2html9174"
+  HREF="py_model_getqconstrs.html">Model.getQConstrs()</A>
+<LI><A NAME="tex2html9175"
+  HREF="py_model_getqcrow.html">Model.getQCRow()</A>
+<LI><A NAME="tex2html9176"
+  HREF="py_model_getrow.html">Model.getRow()</A>
+<LI><A NAME="tex2html9177"
+  HREF="py_model_getsos.html">Model.getSOS()</A>
+<LI><A NAME="tex2html9178"
+  HREF="py_model_getsoss.html">Model.getSOSs()</A>
+<LI><A NAME="tex2html9179"
+  HREF="py_model_gettuneresult.html">Model.getTuneResult()</A>
+<LI><A NAME="tex2html9180"
+  HREF="py_model_getvarbyname.html">Model.getVarByName()</A>
+<LI><A NAME="tex2html9181"
+  HREF="py_model_getvars.html">Model.getVars()</A>
+<LI><A NAME="tex2html9182"
+  HREF="py_model_message.html">Model.message()</A>
+<LI><A NAME="tex2html9183"
+  HREF="py_model_optimize.html">Model.optimize()</A>
+<LI><A NAME="tex2html9184"
+  HREF="py_model_presolve.html">Model.presolve()</A>
+<LI><A NAME="tex2html9185"
+  HREF="py_model_printattr.html">Model.printAttr()</A>
+<LI><A NAME="tex2html9186"
+  HREF="py_model_printquality.html">Model.printQuality()</A>
+<LI><A NAME="tex2html9187"
+  HREF="py_model_printstats.html">Model.printStats()</A>
+<LI><A NAME="tex2html9188"
+  HREF="py_model_read.html">Model.read()</A>
+<LI><A NAME="tex2html9189"
+  HREF="py_model_relax.html">Model.relax()</A>
+<LI><A NAME="tex2html9190"
+  HREF="py_model_remove.html">Model.remove()</A>
+<LI><A NAME="tex2html9191"
+  HREF="py_model_reset.html">Model.reset()</A>
+<LI><A NAME="tex2html9192"
+  HREF="py_model_resetparams.html">Model.resetParams()</A>
+<LI><A NAME="tex2html9193"
+  HREF="py_model_setattr.html">Model.setAttr()</A>
+<LI><A NAME="tex2html9194"
+  HREF="py_model_setobjective.html">Model.setObjective()</A>
+<LI><A NAME="tex2html9195"
+  HREF="py_model_setobjectiven.html">Model.setObjectiveN()</A>
+<LI><A NAME="tex2html9196"
+  HREF="py_model_setpwlobj.html">Model.setPWLObj()</A>
+<LI><A NAME="tex2html9197"
+  HREF="py_model_setparam.html">Model.setParam()</A>
+<LI><A NAME="tex2html9198"
+  HREF="py_model_terminate.html">Model.terminate()</A>
+<LI><A NAME="tex2html9199"
+  HREF="py_model_tune.html">Model.tune()</A>
+<LI><A NAME="tex2html9200"
+  HREF="py_model_update.html">Model.update()</A>
+<LI><A NAME="tex2html9201"
+  HREF="py_model_write.html">Model.write()</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html9125"
+  HREF="py_model2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html9123"
+  HREF="py_python_api_details.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html9117"
+  HREF="py_writeparams.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html9126"
+  HREF="py_model2.html">Model()</A>
+<B> Up:</B> <A NAME="tex2html9124"
+  HREF="py_python_api_details.html">Python API Details</A>
+<B> Previous:</B> <A NAME="tex2html9118"
+  HREF="py_writeparams.html">writeParams()</A></DIV>
+<!--End of Navigation Panel-->
+
+</BODY>
+</HTML>
