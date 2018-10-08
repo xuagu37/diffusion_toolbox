@@ -11,7 +11,7 @@
 #include <functional>
 #include <sstream>
 #include <omp.h>
-#include <math.h>       /* asin */
+#include <math.h>        
 #include <unsupported/Eigen/CXX11/Tensor>
 
 using namespace std;
@@ -799,14 +799,14 @@ int main(int argc, char **argv)
                 MAPMRI_RESIDUAL[i + t*N] = (Y - Q*mapc*S0)(t);
             }
             
-            MAPMRI_RTOP[i] = mapmri_rtop(mapc, mu, n1, n2, n3); cout<<"voxel i "<<i << " RTOP is " << MAPMRI_RTOP[i]<<endl;
-            MAPMRI_RTAP[i] =  mapmri_rtap(mapc, mu, n1, n2, n3)(0); cout<<"voxel i "<<i << " RTAP is " << MAPMRI_RTAP[i]<<endl;
+            MAPMRI_RTOP[i] = mapmri_rtop(mapc, mu, n1, n2, n3);  
+            MAPMRI_RTAP[i] =  mapmri_rtap(mapc, mu, n1, n2, n3)(0);  
             MAPMRI_RTAP[i+N]  =  mapmri_rtap(mapc, mu, n1, n2, n3)(1);
             MAPMRI_RTAP[i+2*N] =  mapmri_rtap(mapc, mu, n1, n2, n3)(2);
-            MAPMRI_RTPP[i] =  mapmri_rtpp(mapc, mu, n1, n2, n3)(0); cout<<"voxel i "<<i << " RTPP is " << MAPMRI_RTPP[i]<<endl;
+            MAPMRI_RTPP[i] =  mapmri_rtpp(mapc, mu, n1, n2, n3)(0);  
             MAPMRI_RTPP[i+N]  =  mapmri_rtpp(mapc, mu, n1, n2, n3)(1);
             MAPMRI_RTPP[i+2*N] =  mapmri_rtpp(mapc, mu, n1, n2, n3)(2);
-            MAPMRI_NG[i] = mapmri_ng(mapc, mu, n1, n2, n3, order)(0); cout<<"voxel i "<<i << " NG is " << MAPMRI_NG[i]<<endl;
+            MAPMRI_NG[i] = mapmri_ng(mapc, mu, n1, n2, n3, order)(0);  
             MAPMRI_NG[i+N] = mapmri_ng(mapc, mu, n1, n2, n3, order)(1);
             MAPMRI_NG[i+2*N] = mapmri_ng(mapc, mu, n1, n2, n3, order)(2);
             MAPMRI_NG[i+3*N] = mapmri_ng(mapc, mu, n1, n2, n3, order)(3);
