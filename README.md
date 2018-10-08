@@ -1,13 +1,13 @@
 # dtb, diffusion toolbox
 
-1. MAPMRI.cpp, a C++ implementation of Mean apparent propagator (MAP) MRI [1]
+## MAPMRI.cpp, a C++ implementation of Mean apparent propagator (MAP) MRI [1]
 
-dependencies:
+### dependencies:
 1. nifticlib
 2. Gurobi optimization library
 3. EIGEN library
 
-compile:
+### compile:
 DT=~/diffusion_toolbox
 EIGEN=$DT/eigen
 NIFTICLIB=$DT/nifticlib-2.0.0
