@@ -3,18 +3,15 @@
 1. MAPMRI.cpp, a C++ implementation of Mean apparent propagator (MAP) MRI [1]
 
 dependencies:
-
 1. nifticlib
 2. Gurobi optimization library
 3. EIGEN library
 
 compile:
-
 DT=~/diffusion_toolbox
 EIGEN=$DT/eigen
 NIFTICLIB=$DT/nifticlib-2.0.0
 GUROBI=$DT/gurobi751
-
 g++ $DT/cpp/MAPMRI.cpp -I$EIGEN -L$NIFTICLIB/linux/lib -I$NIFTICLIB/linux/niftilib -I$NIFTICLIB/linux/znzlib -I$GUROBI/linux64/include -L$GUROBI/linux64/lib/ -lniftiio -lznz -lz -lgurobi_c++ -lgurobi75 -O3 -march=native -std=c++17 -fopenmp -o $DT/bin/MAPMRI -w
 
 
