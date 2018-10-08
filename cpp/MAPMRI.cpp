@@ -694,7 +694,7 @@ int main(int argc, char **argv)
     SelfAdjointEigenSolver<MatrixXd> es;
     double currentTime;
 #pragma omp parallel for shared (order, bvals, n_b0, N,  DWI_Mask, DWI_DATA_T, DWI_Data,X,X2, pinv_X,pinv_X2, tau, ncoeff, complex_i, n1, n2, n3, grid_size, N_constraints, sense, rhs, lb, MAPMRI_RTOP, MAPMRI_RTAP, MAPMRI_RTPP, MAPMRI_NG, MAPMRI_PA, MAPMRI_RESIDUAL, VERBOSE, analyzed_voxels, analyzed_portion, N_in_mask, timeLeft, startTime, previous_analyzed_portion) private (i, t, k,eigenval1, eigenval2, eigenval3, es, psolver, dr, success,  objval, pinv_Q,  currentTime) firstprivate (Y_norm,Y_norm1b0,Y_norm2, Y,Y2, logY,logY2, W,W2, pinv_XW,pinv_XW2, S_hat,S_hat2, tensor_elements, tensor, R, Q,Qiso,Kiso,constraint_grid, constraint_grid_iso,Q1b0,Q1b0iso, Q0, Q0iso, mu,mu0, K,e, env,mapc,mapc_iso,A, H, c,Aiso,Hiso,ciso, S0,  roots, polynomial, theta_PO_DTI, theta_PO) num_threads(NUM_THREADS)
-    for (i = 118; i < 121; i++)
+    for (i = 0; i < N; i++)
     {
         if (DWI_Mask[i])
         {
