@@ -1,7 +1,7 @@
 # dtb, diffusion toolbox
 
 ## MAPMRI
-MAPMRI.cpp, a multithreaded C++ implementation of Mean apparent propagator (MAP) MRI using OpenMP.
+MAPMRI.cpp, a multithreaded C++ implementation of Mean apparent propagator (MAP) MRI using OpenMP.\
 For MAPMRI, refer to [1].
 
 ### Dependencies:
