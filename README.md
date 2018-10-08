@@ -1,6 +1,7 @@
 # dtb, diffusion toolbox
 
-## MAPMRI.cpp, a C++ implementation of Mean apparent propagator (MAP) MRI [1]
+## MAPMRI
+MAPMRI.cpp, a C++ implementation of Mean apparent propagator (MAP) MRI [1]
 
 ### dependencies:
 1. nifticlib
