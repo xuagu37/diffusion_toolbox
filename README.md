@@ -13,9 +13,7 @@ DT=~/diffusion_toolbox\
 EIGEN=$DT/eigen\
 NIFTICLIB=$DT/nifticlib-2.0.0\
 GUROBI=$DT/gurobi751\
-g++ $DT/cpp/MAPMRI.cpp -o $DT/bin/MAPMRI \
--I$EIGEN -L$NIFTICLIB/linux/lib -I$NIFTICLIB/linux/niftilib -I$NIFTICLIB/linux/znzlib -I$GUROBI/linux64/include -L$GUROBI/linux64/lib/ \
--lniftiio -lznz -lz -lgurobi_c++ -lgurobi75 -O3 -march=native -std=c++17 -fopenmp -w
+g++ $DT/cpp/MAPMRI.cpp -o $DT/bin/MAPMRI -I$EIGEN -L$NIFTICLIB/linux/lib -I$NIFTICLIB/linux/niftilib -I$NIFTICLIB/linux/znzlib -I$GUROBI/linux64/include -L$GUROBI/linux64/lib/ -lniftiio -lznz -lz -lgurobi_c++ -lgurobi75 -O3 -march=native -std=c++17 -fopenmp -w
 
 
 
