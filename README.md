@@ -1,8 +1,8 @@
 # dtb, diffusion toolbox
 
 ## MAPMRI
-MAPMRI.cpp, a multithreaded C++ implementation of Mean apparent propagator (MAP) MRI using OpenMP.\
-For MAPMRI, refer to [1].
+MAPMRI.cpp, a multithreaded C++ implementation of Mean apparent propagator (MAP) MRI using OpenMP\
+For MAPMRI, refer to [1]
 
 ### Dependencies:
 1. nifticlib
@@ -23,3 +23,11 @@ MAPMRI dwi.nii.gz brain_mask.nii.gz bvals.txt bvecs.txt -grid_size 15 -order 6 -
 
 ### References
 [1] Özarslan, Evren, et al. "Mean apparent propagator (MAP) MRI: a novel diffusion imaging method for mapping tissue microstructure." NeuroImage 78 (2013): 16-32.
+
+
+
+## dti_fit
+dti_fit.m, a MATLAB implementation of diffusion tensor fitting\
+
+### Run:
+dti_parameters = dti_fit('data',dwi,'bvals',bvals,'bvecs',bvecs,'brain_mask',brain_mask);
