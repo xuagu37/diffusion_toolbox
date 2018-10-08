@@ -872,7 +872,7 @@ int main(int argc, char **argv)
                 cout << "Exception during optimization" << endl;
             }
             
-            MAPMRI_PA[i] = mapmri_pa(mapc, mapc_iso, mu, mu0, n1, n2, n3, order);   cout<<"voxel i "<<i << " PA is " << MAPMRI_PA[i]<<endl<<endl; 
+            MAPMRI_PA[i] = mapmri_pa(mapc, mapc_iso, mu, mu0, n1, n2, n3, order);    
             MAPMRI_PA[i+N] = sqrt(1 - 8*mu0*mu0*mu0*mu(0)*mu(1)*mu(2)/(mu(0)*mu(0)+mu0*mu0)/(mu(1)*mu(1)+mu0*mu0)/(mu(2)*mu(2)+mu0*mu0));            
             theta_PO_DTI = asin(MAPMRI_PA[i+N]);
             theta_PO = asin(MAPMRI_PA[i]);            
