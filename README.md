@@ -10,7 +10,7 @@ For MAPMRI, refer to [1]
 3. EIGEN library
 
 ### Compile:
-DT=~/diffusion_toolbox\
+DT=~/dtb\
 EIGEN=$DT/eigen\
 NIFTICLIB=$DT/nifticlib-2.0.0\
 GUROBI=$DT/gurobi751\
