@@ -8,6 +8,7 @@ For MAPMRI, refer to [1]
 1. nifticlib
 2. Gurobi optimization library
 3. EIGEN library  
+
 After installing Gurobi, you might need to recompile the libgurobi_c++.a by  
 cd ${GUROBI_HOME}/src/build   
 make  
