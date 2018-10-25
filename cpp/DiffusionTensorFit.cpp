@@ -34,15 +34,17 @@ int main(int argc, char **argv)
   float   MIN_SIGNAL = 1;
   // If eigenvalue if less than MIN_DIFFUSIVITY, then replace with MIN_DIFFUSIVITY
   double  MIN_DIFFUSIVITY = 1e-6;
-    // Use first n_dti volumes to do DTI fitting
-    int     b_threshold = 2000;
+  // Use first n_dti volumes to do DTI fitting
+  int     b_threshold = 2000;
   // Fitting method
   const char* dti_fit = "WLS";
-    // Number of threads for OpemMP
-    int     NUM_THREADS = 5;
+  // Number of threads for OpemMP
+  int     NUM_THREADS = 5;
   // Other
   bool			    VERBOSE = false;
-
+  bool			    CHANGE_OUTPUT_FILENAME = false;
+  // Output
+  const char*		outputFilename;
 
   for (int i = 0; i < 500; i++)
   {
@@ -69,6 +71,8 @@ int main(int argc, char **argv)
     printf(" -MIN_DIFFUSIVITY           Replace eigenvalues below, default 1e-6 \n");
     printf(" -verbose                   Print extra stuff (default false) \n");
     printf(" -threads                   Number of threads for OpenMP, default 5 \n");
+    printf(" -output                    Set output filename \n");
+
     return EXIT_SUCCESS;
   }
 
@@ -104,24 +108,24 @@ int main(int argc, char **argv)
       return EXIT_FAILURE;
     }
     fclose(fp);
-    // Check that file extension is .bval
-    CheckFileExtension(argv[3],extensionOK,extension);
-    fp = fopen(argv[2],"r");
-    if (fp == NULL)
-    {
-      printf("Could not open file %s !\n",argv[2]);
-      return EXIT_FAILURE;
-    }
-    fclose(fp);
-    // Check that file extension is .bvec
-    CheckFileExtension(argv[4],extensionOK,extension);
-    fp = fopen(argv[2],"r");
-    if (fp == NULL)
-    {
-      printf("Could not open file %s !\n",argv[2]);
-      return EXIT_FAILURE;
-    }
-    fclose(fp);
+    // // Check that file extension is .bval
+    // CheckFileExtension(argv[3],extensionOK,extension);
+    // fp = fopen(argv[2],"r");
+    // if (fp == NULL)
+    // {
+    //   printf("Could not open file %s !\n",argv[2]);
+    //   return EXIT_FAILURE;
+    // }
+    // fclose(fp);
+    // // Check that file extension is .bvec
+    // CheckFileExtension(argv[4],extensionOK,extension);
+    // fp = fopen(argv[2],"r");
+    // if (fp == NULL)
+    // {
+    //   printf("Could not open file %s !\n",argv[2]);
+    //   return EXIT_FAILURE;
+    // }
+    // fclose(fp);
   }
 
   // Loop over additional inputs
@@ -145,16 +149,27 @@ int main(int argc, char **argv)
       dti_fit = argv[i+1];
       i += 2;
     }
-        else if (strcmp(input,"-threads") == 0)
-        {
-            if ( (i+1) >= argc  )
-            {
-                printf("Unable to read name after -threads !\n");
-                return EXIT_FAILURE;
-            }
-            NUM_THREADS = (int)strtod(argv[i+1], &p);
-            i += 2;
-        }
+    else if (strcmp(input,"-threads") == 0)
+    {
+      if ( (i+1) >= argc  )
+      {
+        printf("Unable to read name after -threads !\n");
+        return EXIT_FAILURE;
+      }
+      NUM_THREADS = (int)strtod(argv[i+1], &p);
+      i += 2;
+    }
+    else if (strcmp(input,"-output") == 0)
+    {
+      CHANGE_OUTPUT_FILENAME = true;
+      if ( (i+1) >= argc  )
+      {
+        printf("Unable to read name after -output !\n");
+        return EXIT_FAILURE;
+      }
+      outputFilename = argv[i+1];
+      i += 2;
+    }
     else if (strcmp(input,"-MIN_SIGNAL") == 0)
     {
       if ( (i+1) >= argc  )
@@ -184,28 +199,28 @@ int main(int argc, char **argv)
       }
       MIN_DIFFUSIVITY = (float)strtod(argv[i+1], &p);
       i += 2;
-    }  
+    }
     else if (strcmp(input,"-b_threshold") == 0)
-        {
-            if ( (i+1) >= argc  )
-            {
-                printf("Unable to read name after -b_threshold !\n");
-                return EXIT_FAILURE;
-            }
-            b_threshold = (float)strtod(argv[i+1], &p);
-            i += 2;
-        }    
+    {
+      if ( (i+1) >= argc  )
+      {
+        printf("Unable to read name after -b_threshold !\n");
+        return EXIT_FAILURE;
+      }
+      b_threshold = (float)strtod(argv[i+1], &p);
+      i += 2;
+    }
     else
     {
       printf("Unrecognized option! %s \n",argv[i]);
       return EXIT_FAILURE;
     }
   }
-  
+
   if (VERBOSE) {
-      printf("DTI fitting. \n\n");
+    printf("DTI fitting. \n\n");
   }
-  
+
   double startTime = GetWallTime();
   // Read the diffusion data
   nifti_image *inputDWI = nifti_image_read(argv[1],1);
@@ -262,77 +277,77 @@ int main(int argc, char **argv)
   DWI_MD_SIZE = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 1 * sizeof(float);
 
 
-    // Read b-values
-    MatrixXd bvals(DWI_DATA_T, 1);
-    MatrixXd bvecs(DWI_DATA_T, 3);
-    ifstream inputbvals(argv[3]);
-    float read_value;
-    // test file open
-    if (inputbvals)
+  // Read b-values
+  MatrixXd bvals(DWI_DATA_T, 1);
+  MatrixXd bvecs(DWI_DATA_T, 3);
+  ifstream inputbvals(argv[3]);
+  float read_value;
+  // test file open
+  if (inputbvals)
+  {
+    i = 0;
+    // read the elements in the file into a vector
+    while ( inputbvals >> read_value )
     {
-        i = 0;
-        // read the elements in the file into a vector
-        while ( inputbvals >> read_value )
+      if (i > DWI_DATA_T - 1)
+      {
+        cout << "Number of b values should be the same as the number of data volumes!" << endl;
+        return EXIT_FAILURE;
+      }
+      bvals(i) = read_value;
+      i = i + 1;
+    }
+  }
+  else
+  {
+    cout << "b values file does not exist." << endl;
+    return 0;
+  }
+  inputbvals.close();
+  // Check the how many lines in bvecs
+  string line{"line"};
+  int N_Bvecs_lines = 0;
+  ifstream inputbvecs2(argv[4]);
+  while (getline(inputbvecs2, line)) {
+    N_Bvecs_lines++;
+  }
+  // Read bvecs
+  ifstream inputbvecs(argv[4]);
+  // test file open
+  if (inputbvecs)
+  {
+    i = 0;
+    // read the elements in the file into a matrix
+    while ( inputbvecs >> read_value )
+    {
+      if (N_Bvecs_lines > DWI_DATA_T)
+      {
+        cout << "Number of b vectors should be the same as the number of data volumes!";
+        return EXIT_FAILURE;
+      }
+
+      else if (N_Bvecs_lines == DWI_DATA_T)
+      {
+        bvecs(i/3, i%3) = read_value;
+        i = i + 1;
+      }
+      else if (N_Bvecs_lines == 3)
+      {
+        if (i > 3*DWI_DATA_T - 1)
         {
-            if (i > DWI_DATA_T - 1)
-            {
-                cout << "Number of b values should be the same as the number of data volumes!" << endl;
-                return EXIT_FAILURE;
-            }
-            bvals(i) = read_value;
-            i = i + 1;
+          cout << "Number of b vectors should be the same as the number of data volumes!" << endl;
+          return EXIT_FAILURE;
         }
+        bvecs(i%DWI_DATA_T, i/DWI_DATA_T) = read_value;
+        i = i + 1;
+      }
     }
-    else
-    {
-        cout << "b values file does not exist." << endl;
-        return 0;
-    }
-    inputbvals.close();
-    // Check the how many lines in bvecs
-    string line{"line"};
-    int N_Bvecs_lines = 0;
-    ifstream inputbvecs2(argv[4]);
-    while (getline(inputbvecs2, line)) {
-        N_Bvecs_lines++;
-    }
-    // Read bvecs
-    ifstream inputbvecs(argv[4]);
-    // test file open
-    if (inputbvecs)
-    {
-        i = 0;
-        // read the elements in the file into a matrix
-        while ( inputbvecs >> read_value )
-        {
-            if (N_Bvecs_lines > DWI_DATA_T)
-            {
-                cout << "Number of b vectors should be the same as the number of data volumes!";
-                return EXIT_FAILURE;
-            }
-            
-            else if (N_Bvecs_lines == DWI_DATA_T)
-            {
-                bvecs(i/3, i%3) = read_value;
-                i = i + 1;
-            }
-            else if (N_Bvecs_lines == 3)
-            {
-                if (i > 3*DWI_DATA_T - 1)
-                {
-                    cout << "Number of b vectors should be the same as the number of data volumes!" << endl;
-                    return EXIT_FAILURE;
-                }
-                bvecs(i%DWI_DATA_T, i/DWI_DATA_T) = read_value;
-                i = i + 1;
-            }
-        }
-    }
-    else
-    {
-        cout << "b vectors file does not exist." << endl;
-        return 0;
-    }
+  }
+  else
+  {
+    cout << "b vectors file does not exist." << endl;
+    return 0;
+  }
 
   // Print some info
   printf("DWI data size: %zu x %zu x %zu x %zu \n",  DWI_DATA_W, DWI_DATA_H, DWI_DATA_D, DWI_DATA_T);
@@ -389,58 +404,58 @@ int main(int argc, char **argv)
     return EXIT_FAILURE;
   }
   // Convert brain mask to floats and get the number of voxels within the mask
-    int N_in_mask = 0;
-    if ( inputMask->datatype == DT_SIGNED_SHORT )
+  int N_in_mask = 0;
+  if ( inputMask->datatype == DT_SIGNED_SHORT )
+  {
+    short int *p = (short int*)inputMask->data;
+    for (size_t i = 0; i < DWI_DATA_W * DWI_DATA_H * DWI_DATA_D; i++)
     {
-        short int *p = (short int*)inputMask->data;
-        for (size_t i = 0; i < DWI_DATA_W * DWI_DATA_H * DWI_DATA_D; i++)
-        {
-            DWI_Mask[i] = (float)p[i];
-            if (DWI_Mask[i] != 0){
-                N_in_mask = N_in_mask + 1;
-            }
-        }
+      DWI_Mask[i] = (float)p[i];
+      if (DWI_Mask[i] != 0){
+        N_in_mask = N_in_mask + 1;
+      }
     }
-    else if ( inputMask->datatype == DT_UINT8 )
+  }
+  else if ( inputMask->datatype == DT_UINT8 )
+  {
+    unsigned char *p = (unsigned char*)inputMask->data;
+    for (size_t i = 0; i < DWI_DATA_W * DWI_DATA_H * DWI_DATA_D; i++)
     {
-        unsigned char *p = (unsigned char*)inputMask->data;
-        for (size_t i = 0; i < DWI_DATA_W * DWI_DATA_H * DWI_DATA_D; i++)
-        {
-            DWI_Mask[i] = (float)p[i];
-            if (DWI_Mask[i] != 0){
-                N_in_mask = N_in_mask + 1;
-            }
-        }
+      DWI_Mask[i] = (float)p[i];
+      if (DWI_Mask[i] != 0){
+        N_in_mask = N_in_mask + 1;
+      }
     }
-    else if ( inputMask->datatype == DT_FLOAT )
+  }
+  else if ( inputMask->datatype == DT_FLOAT )
+  {
+    float *p = (float*)inputMask->data;
+    for (size_t i = 0; i < DWI_DATA_W * DWI_DATA_H * DWI_DATA_D; i++)
     {
-        float *p = (float*)inputMask->data;
-        for (size_t i = 0; i < DWI_DATA_W * DWI_DATA_H * DWI_DATA_D; i++)
-        {
-            DWI_Mask[i] = p[i];
-            if (DWI_Mask[i] != 0){
-                N_in_mask = N_in_mask + 1;
-            }
-        }
+      DWI_Mask[i] = p[i];
+      if (DWI_Mask[i] != 0){
+        N_in_mask = N_in_mask + 1;
+      }
     }
-    else if ( inputMask->datatype == DT_DOUBLE )
+  }
+  else if ( inputMask->datatype == DT_DOUBLE )
+  {
+    float *p = (float*)inputMask->data;
+    for (size_t i = 0; i < DWI_DATA_W * DWI_DATA_H * DWI_DATA_D; i++)
     {
-        float *p = (float*)inputMask->data;
-        for (size_t i = 0; i < DWI_DATA_W * DWI_DATA_H * DWI_DATA_D; i++)
-        {
-            DWI_Mask[i] = p[i];
-            if (DWI_Mask[i] != 0){
-                N_in_mask = N_in_mask + 1;
-            }
-        }
+      DWI_Mask[i] = p[i];
+      if (DWI_Mask[i] != 0){
+        N_in_mask = N_in_mask + 1;
+      }
     }
-    else
-    {
-        printf("Unknown data type in input brain mask, aborting!\n");
-        FreeAllMemory(allMemoryPointers,numberOfMemoryPointers);
-        FreeAllNiftiImages(allNiftiImages,numberOfNiftiImages);
-        return EXIT_FAILURE;
-    }
+  }
+  else
+  {
+    printf("Unknown data type in input brain mask, aborting!\n");
+    FreeAllMemory(allMemoryPointers,numberOfMemoryPointers);
+    FreeAllNiftiImages(allNiftiImages,numberOfNiftiImages);
+    return EXIT_FAILURE;
+  }
 
   endTime = GetWallTime();
 
@@ -452,113 +467,113 @@ int main(int argc, char **argv)
   startTime = GetWallTime();
 
 
-    int n_b0 = 0;  // Number of b0 volumes
-    int n_subdata = 0;  // Number of sub volumes
-    for (int i = 0; i < DWI_DATA_T; i++)
+  int n_b0 = 0;  // Number of b0 volumes
+  int n_subdata = 0;  // Number of sub volumes
+  for (int i = 0; i < DWI_DATA_T; i++)
+  {
+    if (bvals(i) < 10)
     {
-        if (bvals(i) < 10)
-        {
-            n_b0++;
-        }
-        if (bvals(i) < b_threshold+100)
-        {
-            n_subdata++;
-        }
+      n_b0++;
     }
-
- MatrixXd X(DWI_DATA_T, 7);
-    MatrixXd X2(n_subdata, 7);
-    MatrixXd S_hat(DWI_DATA_T, 1);
-    MatrixXd S_hat2(n_subdata, 1);
-    MatrixXd W(DWI_DATA_T, DWI_DATA_T);
-    MatrixXd W2(n_subdata, n_subdata);
-    MatrixXd pinv_XW(7, DWI_DATA_T);
-    MatrixXd pinv_XW2(7, n_subdata);
-    MatrixXd bvecs2(n_subdata, 3);
-    MatrixXd bvals2(n_subdata, 1);
-    
-    int k = 0;
-    for (int i = 0; i < DWI_DATA_T; i++)
+    if (bvals(i) < b_threshold+100)
     {
-        
-        if (bvals(i) < b_threshold+100)
-        {
-            bvals2(k) = bvals(i);
-            bvecs2.row(k) = bvecs.row(i);
-            k++;
-        }
-    }    
-    
-    
-    X2.col(0) = (bvecs2.col(0).array()*bvecs2.col(0).array()*1*bvals2.array()).matrix();
-    X2.col(1) = (bvecs2.col(0).array()*bvecs2.col(1).array()*2*bvals2.array()).matrix();
-    X2.col(2) = (bvecs2.col(1).array()*bvecs2.col(1).array()*1*bvals2.array()).matrix();
-    X2.col(3) = (bvecs2.col(0).array()*bvecs2.col(2).array()*2*bvals2.array()).matrix();
-    X2.col(4) = (bvecs2.col(1).array()*bvecs2.col(2).array()*2*bvals2.array()).matrix();
-    X2.col(5) = (bvecs2.col(2).array()*bvecs2.col(2).array()*1*bvals2.array()).matrix();
-    X2.col(6).setOnes();
-    X2.col(6) = - X2.col(6);
-    X2 = -X2;
+      n_subdata++;
+    }
+  }
 
-    MatrixXd pinv_X2(7, n_subdata);
+  MatrixXd X(DWI_DATA_T, 7);
+  MatrixXd X2(n_subdata, 7);
+  MatrixXd S_hat(DWI_DATA_T, 1);
+  MatrixXd S_hat2(n_subdata, 1);
+  MatrixXd W(DWI_DATA_T, DWI_DATA_T);
+  MatrixXd W2(n_subdata, n_subdata);
+  MatrixXd pinv_XW(7, DWI_DATA_T);
+  MatrixXd pinv_XW2(7, n_subdata);
+  MatrixXd bvecs2(n_subdata, 3);
+  MatrixXd bvals2(n_subdata, 1);
 
-    pinv_X2 = X2.completeOrthogonalDecomposition().pseudoInverse();
-    MatrixXd Y2(n_subdata, 1); // Data for one subdata voxel
-    MatrixXd logY2(n_subdata, 1); // Data for one subdata voxel
-    MatrixXd tensor_elements(6, 1);
-    MatrixXd tensor(3, 3);
-    double eigenval1, eigenval2, eigenval3; // eigenvalues  
-    // Loop over all voxels
-    int analyzed_voxels = 0;
-    float analyzed_portion = 0.0f;
-    float previous_analyzed_portion = 0.0f;    
-    
-    startTime = GetWallTime();
-int t = 0;
-    float timeLeft = 0;
-    SelfAdjointEigenSolver<MatrixXd> es;
-    double currentTime;
+  int k = 0;
+  for (int i = 0; i < DWI_DATA_T; i++)
+  {
 
-#pragma omp parallel for shared (bvals, DWI_Mask, DWI_DATA_T, DWI_Data,X2,pinv_X2, DWI_Tensors, DWI_Eigenvals, DWI_Eigenvecs, DWI_FA, DWI_MD,  VERBOSE, analyzed_voxels, analyzed_portion, N_in_mask, timeLeft, startTime, previous_analyzed_portion) private (i, t,k, eigenval1, eigenval2, eigenval3, es, currentTime) firstprivate (Y2,logY2, W2,pinv_XW2,S_hat2, tensor_elements, tensor) num_threads(NUM_THREADS)
+    if (bvals(i) < b_threshold+100)
+    {
+      bvals2(k) = bvals(i);
+      bvecs2.row(k) = bvecs.row(i);
+      k++;
+    }
+  }
+
+
+  X2.col(0) = (bvecs2.col(0).array()*bvecs2.col(0).array()*1*bvals2.array()).matrix();
+  X2.col(1) = (bvecs2.col(0).array()*bvecs2.col(1).array()*2*bvals2.array()).matrix();
+  X2.col(2) = (bvecs2.col(1).array()*bvecs2.col(1).array()*1*bvals2.array()).matrix();
+  X2.col(3) = (bvecs2.col(0).array()*bvecs2.col(2).array()*2*bvals2.array()).matrix();
+  X2.col(4) = (bvecs2.col(1).array()*bvecs2.col(2).array()*2*bvals2.array()).matrix();
+  X2.col(5) = (bvecs2.col(2).array()*bvecs2.col(2).array()*1*bvals2.array()).matrix();
+  X2.col(6).setOnes();
+  X2.col(6) = - X2.col(6);
+  X2 = -X2;
+
+  MatrixXd pinv_X2(7, n_subdata);
+
+  pinv_X2 = X2.completeOrthogonalDecomposition().pseudoInverse();
+  MatrixXd Y2(n_subdata, 1); // Data for one subdata voxel
+  MatrixXd logY2(n_subdata, 1); // Data for one subdata voxel
+  MatrixXd tensor_elements(6, 1);
+  MatrixXd tensor(3, 3);
+  double eigenval1, eigenval2, eigenval3; // eigenvalues
+  // Loop over all voxels
+  int analyzed_voxels = 0;
+  float analyzed_portion = 0.0f;
+  float previous_analyzed_portion = 0.0f;
+
+  startTime = GetWallTime();
+  int t = 0;
+  float timeLeft = 0;
+  SelfAdjointEigenSolver<MatrixXd> es;
+  double currentTime;
+
+  #pragma omp parallel for shared (bvals, DWI_Mask, DWI_DATA_T, DWI_Data,X2,pinv_X2, DWI_Tensors, DWI_Eigenvals, DWI_Eigenvecs, DWI_FA, DWI_MD,  VERBOSE, analyzed_voxels, analyzed_portion, N_in_mask, timeLeft, startTime, previous_analyzed_portion) private (i, t,k, eigenval1, eigenval2, eigenval3, es, currentTime) firstprivate (Y2,logY2, W2,pinv_XW2,S_hat2, tensor_elements, tensor) num_threads(NUM_THREADS)
 
   for (int i = 0; i < N; i++){
 
-if (DWI_Mask[i])
+    if (DWI_Mask[i])
+    {
+      k = 0;
+      for (t = 0; t < DWI_DATA_T; t++)
+      {
+        if (bvals(t) < b_threshold + 100)
         {
-            k = 0;
-            for (t = 0; t < DWI_DATA_T; t++)
-            {                
-                if (bvals(t) < b_threshold + 100)
-                {
-                    Y2(k) = max(DWI_Data[i + t*N], MIN_SIGNAL);
-                    k++;
-                }
-            }            
+          Y2(k) = max(DWI_Data[i + t*N], MIN_SIGNAL);
+          k++;
+        }
+      }
 
-            // Get the tensor for voxel i
-            logY2 = Y2.array().log();            
-            
-            if (strcmp(dti_fit,"LS") == 0)
-            {
-                tensor_elements = (pinv_X2*logY2).topRows(6);
-            }
-            if (strcmp(dti_fit,"WLS") == 0)
-            {
-                tensor_elements = (pinv_X2*logY2);
-                S_hat2 = ((X2*tensor_elements).array().exp())*((X2*tensor_elements).array().exp());
-                W2 = S_hat2.asDiagonal();
-                pinv_XW2 = ((X2.transpose()*W2*X2).inverse())*X2.transpose()*W2;
-                tensor_elements = (pinv_XW2*logY2).topRows(6);
-            }
-            
-            tensor << tensor_elements(0), tensor_elements(1), tensor_elements(3),
-                    tensor_elements(1), tensor_elements(2), tensor_elements(4),
-                    tensor_elements(3), tensor_elements(4), tensor_elements(5);
-            
-            es.compute(tensor);
-            eigenval1 = max(es.eigenvalues()(2), MIN_DIFFUSIVITY);
-            eigenval2 = max(es.eigenvalues()(1), MIN_DIFFUSIVITY);
-            eigenval3 = max(es.eigenvalues()(0), MIN_DIFFUSIVITY);
+      // Get the tensor for voxel i
+      logY2 = Y2.array().log();
+
+      if (strcmp(dti_fit,"LS") == 0)
+      {
+        tensor_elements = (pinv_X2*logY2).topRows(6);
+      }
+      if (strcmp(dti_fit,"WLS") == 0)
+      {
+        tensor_elements = (pinv_X2*logY2);
+        S_hat2 = ((X2*tensor_elements).array().exp())*((X2*tensor_elements).array().exp());
+        W2 = S_hat2.asDiagonal();
+        pinv_XW2 = ((X2.transpose()*W2*X2).inverse())*X2.transpose()*W2;
+        tensor_elements = (pinv_XW2*logY2).topRows(6);
+      }
+
+      tensor << tensor_elements(0), tensor_elements(1), tensor_elements(3),
+      tensor_elements(1), tensor_elements(2), tensor_elements(4),
+      tensor_elements(3), tensor_elements(4), tensor_elements(5);
+
+      es.compute(tensor);
+      eigenval1 = max(es.eigenvalues()(2), MIN_DIFFUSIVITY);
+      eigenval2 = max(es.eigenvalues()(1), MIN_DIFFUSIVITY);
+      eigenval3 = max(es.eigenvalues()(0), MIN_DIFFUSIVITY);
 
 
       DWI_Tensors[i + 0*N] = tensor_elements(0);
@@ -585,33 +600,33 @@ if (DWI_Mask[i])
       DWI_FA[i] = sqrt( 0.5*(pow((DWI_Eigenvals[i + 0*N] - DWI_Eigenvals[i + 1*N]),2) + pow((DWI_Eigenvals[i + 1*N] - DWI_Eigenvals[i + 2*N]),2) + pow((DWI_Eigenvals[i + 2*N] - DWI_Eigenvals[i + 0*N]),2)) / (pow(DWI_Eigenvals[i + 0*N], 2) + pow(DWI_Eigenvals[i + 1*N], 2) + pow(DWI_Eigenvals[i + 2*N], 2)) );
       DWI_MD[i] = (DWI_Eigenvals[i + 0]+DWI_Eigenvals[i + 1]+DWI_Eigenvals[i + 2])/3;
       //cout << DWI_FA[i]  << endl;
-            if (VERBOSE)
-            {
-#pragma omp critical
-                {
-                // Get info about processing time
-                analyzed_voxels++;
-                currentTime = GetWallTime();
-                analyzed_portion = (float)analyzed_voxels/N_in_mask * 100.0f;
-                timeLeft = (float)(currentTime - startTime) / analyzed_portion * (100.0f - analyzed_portion);
-                if ((analyzed_portion - previous_analyzed_portion) > 0.0f)
-                {
-                    if (timeLeft < 60) {
-                        printf("Analyzed %.2f %% of %i voxels in mask in %.2f minutes, expected time remaining %.2f seconds. \r",analyzed_portion,N_in_mask,(float)(currentTime - startTime)/60.0f,timeLeft/1.0f);
-                        cout.flush();
-                    }
-                    else if (timeLeft > 3600){
-                        printf("Analyzed %.2f %% of %i voxels in mask in %.2f minutes, expected time remaining %.2f hours. \r",analyzed_portion,N_in_mask,(float)(currentTime - startTime)/60.0f,timeLeft/3600.0f);
-                        cout.flush();
-                    }
-                    else {
-                        printf("Analyzed %.2f %% of %i voxels in mask in %.2f minutes, expected time remaining %.2f minutes. \r",analyzed_portion,N_in_mask,(float)(currentTime - startTime)/60.0f,timeLeft/60.0f);
-                        cout.flush();
-                    }
-                    previous_analyzed_portion = analyzed_portion;
-                }
-                }
+      if (VERBOSE)
+      {
+        #pragma omp critical
+        {
+          // Get info about processing time
+          analyzed_voxels++;
+          currentTime = GetWallTime();
+          analyzed_portion = (float)analyzed_voxels/N_in_mask * 100.0f;
+          timeLeft = (float)(currentTime - startTime) / analyzed_portion * (100.0f - analyzed_portion);
+          if ((analyzed_portion - previous_analyzed_portion) > 0.0f)
+          {
+            if (timeLeft < 60) {
+              printf("Analyzed %.2f %% of %i voxels in mask in %.2f minutes, expected time remaining %.2f seconds. \r",analyzed_portion,N_in_mask,(float)(currentTime - startTime)/60.0f,timeLeft/1.0f);
+              cout.flush();
             }
+            else if (timeLeft > 3600){
+              printf("Analyzed %.2f %% of %i voxels in mask in %.2f minutes, expected time remaining %.2f hours. \r",analyzed_portion,N_in_mask,(float)(currentTime - startTime)/60.0f,timeLeft/3600.0f);
+              cout.flush();
+            }
+            else {
+              printf("Analyzed %.2f %% of %i voxels in mask in %.2f minutes, expected time remaining %.2f minutes. \r",analyzed_portion,N_in_mask,(float)(currentTime - startTime)/60.0f,timeLeft/60.0f);
+              cout.flush();
+            }
+            previous_analyzed_portion = analyzed_portion;
+          }
+        }
+      }
     }
     else{
       DWI_Tensors[i + 0*N] = 0;
@@ -647,7 +662,6 @@ if (DWI_Mask[i])
   nifti_image *outputNifti = nifti_copy_nim_info(inputDWI);
   allNiftiImages[numberOfNiftiImages] = outputNifti;
   numberOfNiftiImages++;
-
   // Change dimensions for DWI_Tensors
   if (DWI_DATA_T > 1)
   {
@@ -658,7 +672,16 @@ if (DWI_Mask[i])
     outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 6;
   }
   // Copy information from input data
-  nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
+      if (!CHANGE_OUTPUT_FILENAME)
+      {
+          nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
+      }
+      else
+      {
+          nifti_set_filenames(outputNifti, outputFilename, 0, 1);
+      }
+  // Copy information from input data
+  // nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
   WriteNifti(outputNifti,DWI_Tensors,"_tensors",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);
 
   // Change dimensions for DWI_Eigenvals
@@ -671,7 +694,16 @@ if (DWI_Mask[i])
     outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 3;
   }
   // Copy information from input data
-  nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
+      if (!CHANGE_OUTPUT_FILENAME)
+      {
+          nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
+      }
+      else
+      {
+          nifti_set_filenames(outputNifti, outputFilename, 0, 1);
+      }
+  // Copy information from input data
+  // nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
   WriteNifti(outputNifti,DWI_Eigenvals,"_eigenvals",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);
 
   // Change dimensions for DWI_Eigenvecs
@@ -684,7 +716,16 @@ if (DWI_Mask[i])
     outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 9;
   }
   // Copy information from input data
-  nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
+      if (!CHANGE_OUTPUT_FILENAME)
+      {
+          nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
+      }
+      else
+      {
+          nifti_set_filenames(outputNifti, outputFilename, 0, 1);
+      }
+  // Copy information from input data
+  // nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
   WriteNifti(outputNifti,DWI_Eigenvecs,"_eigenvecs",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);
 
   // Change dimensions for DWI_FA
@@ -697,7 +738,16 @@ if (DWI_Mask[i])
     outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D;
   }
   // Copy information from input data
-  nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
+      if (!CHANGE_OUTPUT_FILENAME)
+      {
+          nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
+      }
+      else
+      {
+          nifti_set_filenames(outputNifti, outputFilename, 0, 1);
+      }
+  // Copy information from input data
+  // nifti_set_filenames(outputNifti, inputDWI->fname, 0, 1);
   WriteNifti(outputNifti,DWI_FA,"_FA",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);
   WriteNifti(outputNifti,DWI_MD,"_MD",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);
 
