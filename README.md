@@ -37,7 +37,7 @@ MAPMRI dwi.nii.gz brain_mask.nii.gz bvals.txt bvecs.txt -grid_size 15 -order 6 -
 DT=~/diffusion_toolbox\
 EIGEN=$DT/eigen\
 NIFTICLIB=$DT/nifticlib-2.0.0\
-g++ $DT/cpp/DiffusionTensorFit.cpp -lniftiio -lznz -lz -I$DT/eigen/ -L$DT/nifticlib-2.0.0/linux/lib -I$DT/nifticlib-2.0.0/linux/niftilib -I$DT/nifticlib-2.0.0/linux/znzlib -I$GUROBI/linux64/include -L$GUROBI/linux64/lib/ -lniftiio -lznz -lz -lgurobi_c++ -lgurobi75  -O3  -march=native -std=c++17 -fopenmp -o $DT/bin/DiffusionTensorFit 
+g++ $DT/cpp/DiffusionTensorFit.cpp -lniftiio -lznz -lz -I$DT/eigen/ -L$DT/nifticlib-2.0.0/linux/lib -I$DT/nifticlib-2.0.0/linux/niftilib -I$DT/nifticlib-2.0.0/linux/znzlib -I$GUROBI/linux64/include -L$GUROBI/linux64/lib/ -lniftiio -lznz -lz -lgurobi_c++ -lgurobi75  -O3  -march=native -std=c++17 -fopenmp -o $DT/bin/DiffusionTensorFit -w 
 
 ### Run:
 DiffusionTensorFit dwi.nii.gz brain_mask.nii.gz bvals.txt bvecs.txt -threads 10
