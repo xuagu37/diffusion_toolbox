@@ -11,7 +11,7 @@
 #include <functional>
 #include <sstream>
 #include <omp.h>
-#include <math.h>       
+#include <math.h>
 #include <unsupported/Eigen/CXX11/Tensor>
 
 using namespace std;
@@ -72,8 +72,8 @@ int main(int argc, char **argv)
     int     NUM_THREADS = 5;
     // Other
     bool			    VERBOSE = false;
-    bool			    CHANGE_OUTPUT_FILENAME = false;    
-    
+    bool			    CHANGE_OUTPUT_FILENAME = false;
+
     for (int i = 0; i < 500; i++)
     {
         allMemoryPointers[i] = NULL;
@@ -82,8 +82,8 @@ int main(int argc, char **argv)
     for (int i = 0; i < 500; i++)
     {
         allNiftiImages[i] = NULL;
-    }    
-    
+    }
+
     FILE *fp = NULL;
     // No inputs, so print help text
     if (argc == 1)
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
         printf(" -threads             Number of threads for OpenMP, default 5 \n");
         printf(" -verbose             Print extra stuff \n");
         return EXIT_SUCCESS;
-    }    
+    }
     else if (argc > 1)
     {
         std::string   extension;
@@ -130,23 +130,14 @@ int main(int argc, char **argv)
             printf("File extension is not .nii or .nii.gz, %s is not allowed!\n",extension.c_str());
             return EXIT_FAILURE;
         }
-        fp = fopen(argv[1],"r");
+        fp = fopen(argv[3],"r");
         if (fp == NULL)
         {
             printf("Could not open file %s !\n",argv[1]);
             return EXIT_FAILURE;
         }
         fclose(fp);
-        // Check that file extension is .bvals
-        CheckFileExtension(argv[3],extensionOK,extension);
-        fp = fopen(argv[2],"r");
-        if (fp == NULL)
-        {
-            printf("Could not open file %s !\n",argv[2]);
-            return EXIT_FAILURE;
-        }
-        fclose(fp);
-        fp = fopen(argv[2],"r");
+        fp = fopen(argv[4],"r");
         if (fp == NULL)
         {
             printf("Could not open file %s !\n",argv[2]);
@@ -154,7 +145,7 @@ int main(int argc, char **argv)
         }
         fclose(fp);
     }
-    
+
     // Loop over additional inputs
     int i = 5;
     while (i < argc)
@@ -273,11 +264,11 @@ int main(int argc, char **argv)
             return EXIT_FAILURE;
         }
     }
-    
+
     if (VERBOSE) {
         printf("MAPMRI fitting with constraints. \n\n");
     }
-    
+
     double startTime = GetWallTime();
     // Read the diffusion data
     nifti_image *inputDWI = nifti_image_read(argv[1],1);
@@ -302,7 +293,7 @@ int main(int argc, char **argv)
     {
         printf("It took %f seconds to read the diffusion data and brain mask.\n\n",(float)(endTime - startTime));
     }
-    
+
     // Get data dimensions from input diffusion data
     DWI_DATA_W = inputDWI->nx;
     DWI_DATA_H = inputDWI->ny;
@@ -312,7 +303,7 @@ int main(int argc, char **argv)
     DWI_VOXEL_SIZE_X = inputDWI->dx;
     DWI_VOXEL_SIZE_Y = inputDWI->dy;
     DWI_VOXEL_SIZE_Z = inputDWI->dz;
-    
+
     // Check  if mask has same dimensions as reference volume
     size_t TEMP_DATA_W = inputMask->nx;
     size_t TEMP_DATA_H = inputMask->ny;
@@ -322,8 +313,8 @@ int main(int argc, char **argv)
         printf("Diffusion data has the dimensions %zu x %zu x %zu, while the brain mask has the dimensions %zu x %zu x %zu. Aborting! \n",DWI_DATA_W,DWI_DATA_H,DWI_DATA_D,TEMP_DATA_W,TEMP_DATA_H,TEMP_DATA_D);
         FreeAllNiftiImages(allNiftiImages,numberOfNiftiImages);
         return EXIT_FAILURE;
-    }    
-    
+    }
+
     ncoeff = round(1.0/6*(order/2+1)*(order/2+2)*(2*order+3)); // only even orders supported (symmtric pdf)
     // Memory size
     DWI_VOLUMES_SIZE = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * DWI_DATA_T * sizeof(float);
@@ -334,7 +325,7 @@ int main(int argc, char **argv)
     MAPMRI_NG_SIZE = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 7 * sizeof(float);
     MAPMRI_PA_SIZE = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 3 * sizeof(float);
     MAPMRI_RESIDUAL_SIZE = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * DWI_DATA_T * sizeof(float);
-    
+
     // Read b-values
     MatrixXd bvals(DWI_DATA_T, 1);
     MatrixXd bvecs(DWI_DATA_T, 3);
@@ -383,7 +374,7 @@ int main(int argc, char **argv)
                 cout << "Number of b vectors should be the same as the number of data volumes!";
                 return EXIT_FAILURE;
             }
-            
+
             else if (N_Bvecs_lines == DWI_DATA_T)
             {
                 bvecs(i/3, i%3) = read_value;
@@ -406,14 +397,14 @@ int main(int argc, char **argv)
         cout << "b vectors file does not exist." << endl;
         return 0;
     }
-    
+
     // Print some info
     printf("DWI data size: %zu x %zu x %zu x %zu \n",  DWI_DATA_W, DWI_DATA_H, DWI_DATA_D, DWI_DATA_T);
     printf("DWI data voxel size: %f x %f x %f mm \n\n", DWI_VOXEL_SIZE_X, DWI_VOXEL_SIZE_Y, DWI_VOXEL_SIZE_Z);
     if (!VERBOSE){
         printf("\n");
     }
-    
+
     startTime = GetWallTime();
     AllocateMemory(DWI_Data, DWI_VOLUMES_SIZE, allMemoryPointers, numberOfMemoryPointers, allNiftiImages, numberOfNiftiImages, allocatedHostMemory, "INPUT_DWI");
     AllocateMemory(DWI_Mask, DWI_MASK_SIZE, allMemoryPointers, numberOfMemoryPointers, allNiftiImages, numberOfNiftiImages, allocatedHostMemory, "INPUT_MASK");
@@ -423,13 +414,13 @@ int main(int argc, char **argv)
     AllocateMemory(MAPMRI_NG, MAPMRI_NG_SIZE, allMemoryPointers, numberOfMemoryPointers, allNiftiImages, numberOfNiftiImages, allocatedHostMemory, "OUTPUT_NG");
     AllocateMemory(MAPMRI_PA, MAPMRI_PA_SIZE, allMemoryPointers, numberOfMemoryPointers, allNiftiImages, numberOfNiftiImages, allocatedHostMemory, "OUTPUT_PA");
     AllocateMemory(MAPMRI_RESIDUAL, MAPMRI_RESIDUAL_SIZE, allMemoryPointers, numberOfMemoryPointers, allNiftiImages, numberOfNiftiImages, allocatedHostMemory, "OUTPUT_RESIDUAL");
-    
+
     endTime = GetWallTime();
     if (VERBOSE)
     {
         printf("It took %f seconds to allocate memory.\n",(float)(endTime - startTime));
     }
-    
+
     startTime = GetWallTime();
     // Convert diffusion data to floats
     if ( inputDWI->datatype == DT_SIGNED_SHORT )
@@ -516,13 +507,13 @@ int main(int argc, char **argv)
         FreeAllNiftiImages(allNiftiImages,numberOfNiftiImages);
         return EXIT_FAILURE;
     }
-    
+
     endTime = GetWallTime();
     if (VERBOSE)
     {
         printf("It took %f seconds to convert data to floats.\n\n",(float)(endTime - startTime));
     }
-    
+
     // Get diffusion time
     if ((big_delta == 0) || (small_delta == 0) ){
         tau = 1 / (4 * pow(M_PI, 2));
@@ -530,10 +521,10 @@ int main(int argc, char **argv)
     else{
         tau = big_delta - small_delta / 3;
     }
-    
+
     startTime = GetWallTime();
-    
-    
+
+
     int n_b0 = 0;  // Number of b0 volumes
     int n_subdata = 0;  // Number of sub volumes
     for (int i = 0; i < DWI_DATA_T; i++)
@@ -547,7 +538,7 @@ int main(int argc, char **argv)
             n_subdata++;
         }
     }
-    
+
     //MatrixXd X(DWI_DATA_T, 7);
     MatrixXd X2(n_subdata, 7);
     //MatrixXd S_hat(DWI_DATA_T, 1);
@@ -558,19 +549,19 @@ int main(int argc, char **argv)
     MatrixXd pinv_XW2(7, n_subdata);
     MatrixXd bvecs2(n_subdata, 3);
     MatrixXd bvals2(n_subdata, 1);
-    
+
     int k = 0;
     for (int i = 0; i < DWI_DATA_T; i++)
     {
-        
+
         if (bvals(i) < b_threshold+100)
         {
             bvals2(k) = bvals(i);
             bvecs2.row(k) = bvecs.row(i);
             k++;
         }
-    }    
-    
+    }
+
     //X.col(0) = (bvecs.col(0).array()*bvecs.col(0).array()*1*bvals.array()).matrix();
     //X.col(1) = (bvecs.col(0).array()*bvecs.col(1).array()*2*bvals.array()).matrix();
     //X.col(2) = (bvecs.col(1).array()*bvecs.col(1).array()*1*bvals.array()).matrix();
@@ -580,7 +571,7 @@ int main(int argc, char **argv)
     //X.col(6).setOnes();
     //X.col(6) = - X.col(6);
     //X = -X;
-    
+
     X2.col(0) = (bvecs2.col(0).array()*bvecs2.col(0).array()*1*bvals2.array()).matrix();
     X2.col(1) = (bvecs2.col(0).array()*bvecs2.col(1).array()*2*bvals2.array()).matrix();
     X2.col(2) = (bvecs2.col(1).array()*bvecs2.col(1).array()*1*bvals2.array()).matrix();
@@ -590,7 +581,7 @@ int main(int argc, char **argv)
     X2.col(6).setOnes();
     X2.col(6) = - X2.col(6);
     X2 = -X2;
-    
+
     // Get q
     MatrixXd q(3,DWI_DATA_T);
     q = (GYRO/2/M_PI*(bvecs.array()*(bvals.replicate(1,3)/tau/pow(GYRO,2)).array().sqrt())).transpose();  // 1/um, 3xT
@@ -598,20 +589,20 @@ int main(int argc, char **argv)
     MatrixXd pinv_X2(7, n_subdata);
     //pinv_X = X.completeOrthogonalDecomposition().pseudoInverse();
     pinv_X2 = X2.completeOrthogonalDecomposition().pseudoInverse();
-    
+
     MatrixXd Y(DWI_DATA_T, 1); // Data for one voxel
     MatrixXd Y2(n_subdata, 1); // Data for one subdata voxel
     MatrixXd Y_norm(DWI_DATA_T, 1); // Data for one voxel
-    MatrixXd Y_norm1b0(DWI_DATA_T-n_b0+1, 1); // Data for one voxel    
+    MatrixXd Y_norm1b0(DWI_DATA_T-n_b0+1, 1); // Data for one voxel
     MatrixXd Y_norm2(n_subdata, 1); // Data for one subdata voxel
     //MatrixXd logY(DWI_DATA_T, 1); // Data for one voxel
     MatrixXd logY2(n_subdata, 1); // Data for one subdata voxel
-    
+
     float S0 = 0;
     MatrixXd tensor_elements(6, 1);
     MatrixXd tensor(3, 3);
-    double eigenval1, eigenval2, eigenval3; // eigenvalues    
-    MatrixXd R(3, 3); // rotate matrix    
+    double eigenval1, eigenval2, eigenval3; // eigenvalues
+    MatrixXd R(3, 3); // rotate matrix
     // Some coefficients used for Hermite polynomial
     MatrixXd n1_full(161, 1);
     MatrixXd n2_full(161, 1);
@@ -619,7 +610,7 @@ int main(int argc, char **argv)
     n1_full << 0,2,0,0,1,1,0,4,0,0,3,3,1,1,0,0,2,2,0,2,1,1,6,0,0,5,5,1,1,0,0,4,4,2,2,0,0,4,1,1,3,3,0,3,3,2,2,1,1,2,8,0,0,7,7,1,1,0,0,6,6,2,2,0,0,6,1,1,5,5,3,3,0,0,5,5,2,2,1,1,4,4,0,4,4,3,3,1,1,4,2,2,3,3,2,10,0,0,9,9,1,1,0,0,8,8,2,2,0,0,8,1,1,7,7,3,3,0,0,7,7,2,2,1,1,6,6,4,4,0,0,6,6,3,3,1,1,6,2,2,5,5,0,5,5,4,4,1,1,5,5,3,3,2,2,4,4,2,4,3,3;
     n2_full << 0,0,2,0,1,0,1,0,4,0,1,0,3,0,3,1,2,0,2,1,2,1,0,6,0,1,0,5,0,5,1,2,0,4,0,4,2,1,4,1,3,0,3,2,1,3,1,3,2,2,0,8,0,1,0,7,0,7,1,2,0,6,0,6,2,1,6,1,3,0,5,0,5,3,2,1,5,1,5,2,4,0,4,3,1,4,1,4,3,2,4,2,3,2,3,0,10,0,1,0,9,0,9,1,2,0,8,0,8,2,1,8,1,3,0,7,0,7,3,2,1,7,1,7,2,4,0,6,0,6,4,3,1,6,1,6,3,2,6,2,5,0,5,4,1,5,1,5,4,3,2,5,2,5,3,4,2,4,3,4,3;
     n3_full << 0,0,0,2,0,1,1,0,0,4,0,1,0,3,1,3,0,2,2,1,1,2,0,0,6,0,1,0,5,1,5,0,2,0,4,2,4,1,1,4,0,3,3,1,2,1,3,2,3,2,0,0,8,0,1,0,7,1,7,0,2,0,6,2,6,1,1,6,0,3,0,5,3,5,1,2,1,5,2,5,0,4,4,1,3,1,4,3,4,2,2,4,2,3,3,0,0,10,0,1,0,9,1,9,0,2,0,8,2,8,1,1,8,0,3,0,7,3,7,1,2,1,7,2,7,0,4,0,6,4,6,1,3,1,6,3,6,2,2,6,0,5,5,1,4,1,5,4,5,2,3,2,5,3,5,2,4,4,3,3,4;
-        
+
     MatrixXd n1(ncoeff, 1);
     MatrixXd n2(ncoeff, 1);
     MatrixXd n3(ncoeff, 1);
@@ -627,17 +618,17 @@ int main(int argc, char **argv)
     n2 = n2_full.topRows(ncoeff);
     n3 = n3_full.topRows(ncoeff);
     int N_constraints = grid_size*grid_size*(grid_size+1)/2;
-    
+
     MatrixXd K(N_constraints, ncoeff);
     complex<double> complex_i(0.0,1.0);
     MatrixXd Q(DWI_DATA_T, ncoeff); // Design matrix
     MatrixXd Qiso(DWI_DATA_T, 3); // Design matrix
     MatrixXd Kiso(N_constraints, 3);
-    MatrixXd constraint_grid_iso(N_constraints, 3);    
-    MatrixXd Q1b0(DWI_DATA_T-n_b0+1, ncoeff); // Design matrix    
+    MatrixXd constraint_grid_iso(N_constraints, 3);
+    MatrixXd Q1b0(DWI_DATA_T-n_b0+1, ncoeff); // Design matrix
     MatrixXd Q0 = MatrixXd::Zero(1, ncoeff);
     MatrixXd Q0iso = MatrixXd::Zero(1, order/2+1);
-    MatrixXd Q1b0iso(DWI_DATA_T-n_b0+1, order/2+1); // Design matrix    
+    MatrixXd Q1b0iso(DWI_DATA_T-n_b0+1, order/2+1); // Design matrix
     MatrixXd pinv_Q(ncoeff, DWI_DATA_T); // Design matrix
     MatrixXd mu(3, 1);
     MatrixXd constraint_grid(N_constraints, 3);
@@ -675,19 +666,19 @@ int main(int argc, char **argv)
     double lb[ncoeff];
     for (int i = 0; i < ncoeff; i++){
         lb[i] = -9999999;
-    }    
-    
+    }
+
     Vector3cd roots(3, 1);
     VectorXd polynomial(4, 1);
     PolynomialSolver<double,3> psolver;
     double mu0 = 0;
     double theta_PO_DTI = 0;
-    double theta_PO = 0;    
+    double theta_PO = 0;
     // Loop over all voxels
     int analyzed_voxels = 0;
     float analyzed_portion = 0.0f;
-    float previous_analyzed_portion = 0.0f;    
-    
+    float previous_analyzed_portion = 0.0f;
+
     startTime = GetWallTime();
     int t = 0;
     float timeLeft = 0;
@@ -703,7 +694,7 @@ int main(int argc, char **argv)
             for (t = 0; t < DWI_DATA_T; t++)
             {
                 Y(t) = max(DWI_Data[i + t*N], MIN_SIGNAL);
-                
+
                 if (bvals(t) < b_threshold + 100)
                 {
                     Y2(k) = max(DWI_Data[i + t*N], MIN_SIGNAL);
@@ -713,14 +704,14 @@ int main(int argc, char **argv)
                 {
                     S0 = S0 + Y(t);
                 }
-            }            
+            }
             S0 = S0/n_b0;
             Y_norm = Y/S0;
             Y_norm2 = Y2/S0;
             // Get the tensor for voxel i
             //logY = Y_norm.array().log();
-            logY2 = Y_norm2.array().log();            
-            
+            logY2 = Y_norm2.array().log();
+
             if (strcmp(dti_fit,"LS") == 0)
             {
                 tensor_elements = (pinv_X2*logY2).topRows(6);
@@ -733,16 +724,16 @@ int main(int argc, char **argv)
                 pinv_XW2 = ((X2.transpose()*W2*X2).inverse())*X2.transpose()*W2;
                 tensor_elements = (pinv_XW2*logY2).topRows(6);
             }
-            
+
             tensor << tensor_elements(0), tensor_elements(1), tensor_elements(3),
                     tensor_elements(1), tensor_elements(2), tensor_elements(4),
                     tensor_elements(3), tensor_elements(4), tensor_elements(5);
-            
+
             es.compute(tensor);
             eigenval1 = max(es.eigenvalues()(2), MIN_DIFFUSIVITY);
             eigenval2 = max(es.eigenvalues()(1), MIN_DIFFUSIVITY);
             eigenval3 = max(es.eigenvalues()(0), MIN_DIFFUSIVITY);
-            
+
             mu << eigenval1,
                     eigenval2,
                     eigenval3;
@@ -792,28 +783,28 @@ int main(int argc, char **argv)
                 mapc = Q.completeOrthogonalDecomposition().pseudoInverse()*Y;
                 cout << "Exception during optimization" << endl;
             }
-            
+
             for (t = 0; t < DWI_DATA_T; t++)
             {
                 // Get data for voxel i
                 MAPMRI_RESIDUAL[i + t*N] = (Y - Q*mapc*S0)(t);
             }
-            
-            MAPMRI_RTOP[i] = mapmri_rtop(mapc, mu, n1, n2, n3);  
-            MAPMRI_RTAP[i] =  mapmri_rtap(mapc, mu, n1, n2, n3)(0);  
+
+            MAPMRI_RTOP[i] = mapmri_rtop(mapc, mu, n1, n2, n3);
+            MAPMRI_RTAP[i] =  mapmri_rtap(mapc, mu, n1, n2, n3)(0);
             MAPMRI_RTAP[i+N]  =  mapmri_rtap(mapc, mu, n1, n2, n3)(1);
             MAPMRI_RTAP[i+2*N] =  mapmri_rtap(mapc, mu, n1, n2, n3)(2);
-            MAPMRI_RTPP[i] =  mapmri_rtpp(mapc, mu, n1, n2, n3)(0);  
+            MAPMRI_RTPP[i] =  mapmri_rtpp(mapc, mu, n1, n2, n3)(0);
             MAPMRI_RTPP[i+N]  =  mapmri_rtpp(mapc, mu, n1, n2, n3)(1);
             MAPMRI_RTPP[i+2*N] =  mapmri_rtpp(mapc, mu, n1, n2, n3)(2);
-            MAPMRI_NG[i] = mapmri_ng(mapc, mu, n1, n2, n3, order)(0);  
+            MAPMRI_NG[i] = mapmri_ng(mapc, mu, n1, n2, n3, order)(0);
             MAPMRI_NG[i+N] = mapmri_ng(mapc, mu, n1, n2, n3, order)(1);
             MAPMRI_NG[i+2*N] = mapmri_ng(mapc, mu, n1, n2, n3, order)(2);
             MAPMRI_NG[i+3*N] = mapmri_ng(mapc, mu, n1, n2, n3, order)(3);
             MAPMRI_NG[i+4*N] = mapmri_ng(mapc, mu, n1, n2, n3, order)(4);
             MAPMRI_NG[i+5*N] = mapmri_ng(mapc, mu, n1, n2, n3, order)(5);
             MAPMRI_NG[i+6*N] = mapmri_ng(mapc, mu, n1, n2, n3, order)(6);
-            
+
             polynomial(0) = 3*mu(0)*mu(0)*mu(1)*mu(1)*mu(2)*mu(2);
             polynomial(1) = mu(0)*mu(0)*mu(1)*mu(1)+mu(0)*mu(0)*mu(2)*mu(2)+mu(1)*mu(1)*mu(2)*mu(2);
             polynomial(2) = -(mu(0)*mu(0)+mu(1)*mu(1)+mu(2)*mu(2));
@@ -838,7 +829,7 @@ int main(int argc, char **argv)
             k = 1;
             Q0iso = MatrixXd::Zero(1, order/2+1);
             for (t = 0; t < DWI_DATA_T; t++)
-            {                
+            {
                 if (bvals(t) < 10)
                 {
                     Q0iso = Qiso.row(t) + Q0iso;
@@ -849,13 +840,13 @@ int main(int argc, char **argv)
                     k++;
                 }
             }
-            Q0iso = Q0iso/n_b0; 
+            Q0iso = Q0iso/n_b0;
             Q1b0iso.row(0) = Q0iso.row(0);
             Aiso << Kiso,
                     Q0iso;
-            Aiso = (abs(Aiso.array() - 0) < 1e-13).select(0, Aiso);  
-            Hiso = 0.5*Q1b0iso.transpose()*Q1b0iso; 
-            ciso = -Y_norm1b0.transpose()*Q1b0iso;           
+            Aiso = (abs(Aiso.array() - 0) < 1e-13).select(0, Aiso);
+            Hiso = 0.5*Q1b0iso.transpose()*Q1b0iso;
+            ciso = -Y_norm1b0.transpose()*Q1b0iso;
             try
             {
                 success = dense_optimize(&env, N_constraints + 1, order/2+1, ciso, Hiso, Aiso, sense, rhs, lb, NULL, NULL, mapc_iso, &objval);
@@ -871,14 +862,14 @@ int main(int argc, char **argv)
                 mapc_iso = Qiso.completeOrthogonalDecomposition().pseudoInverse()*Y;
                 cout << "Exception during optimization" << endl;
             }
-            
-            MAPMRI_PA[i] = mapmri_pa(mapc, mapc_iso, mu, mu0, n1, n2, n3, order);   
-            MAPMRI_PA[i+N] = sqrt(1 - 8*mu0*mu0*mu0*mu(0)*mu(1)*mu(2)/(mu(0)*mu(0)+mu0*mu0)/(mu(1)*mu(1)+mu0*mu0)/(mu(2)*mu(2)+mu0*mu0));            
+
+            MAPMRI_PA[i] = mapmri_pa(mapc, mapc_iso, mu, mu0, n1, n2, n3, order);
+            MAPMRI_PA[i+N] = sqrt(1 - 8*mu0*mu0*mu0*mu(0)*mu(1)*mu(2)/(mu(0)*mu(0)+mu0*mu0)/(mu(1)*mu(1)+mu0*mu0)/(mu(2)*mu(2)+mu0*mu0));
             theta_PO_DTI = asin(MAPMRI_PA[i+N]);
-            theta_PO = asin(MAPMRI_PA[i]);            
+            theta_PO = asin(MAPMRI_PA[i]);
             // THETA_PO, THETA_PO_DTI: 0 - pi
-            MAPMRI_PA[i+2*N] = theta_PO - theta_PO_DTI; 
-                        
+            MAPMRI_PA[i+2*N] = theta_PO - theta_PO_DTI;
+
             if (VERBOSE)
             {
 #pragma omp critical
@@ -906,11 +897,11 @@ int main(int argc, char **argv)
                 }
                 }
             }
-            
+
         }
         else
         {  // If out of mask
-            
+
             MAPMRI_RTOP[i] = 0;
             MAPMRI_RTAP[i] = 0;
             MAPMRI_RTAP[i+N] = 0;
@@ -934,9 +925,9 @@ int main(int argc, char **argv)
                 MAPMRI_RESIDUAL[i + t*N] = 0; //cout << rand() % DWI_DATA_T<<" ";
             }
         }
-        
+
     }
-    
+
     endTime = GetWallTime();
     if (VERBOSE)
     {
@@ -952,20 +943,20 @@ int main(int argc, char **argv)
         }
         else {
             printf("It took %f seconds to fit the MAPMRI model.\n",(float)(endTime - startTime));
-        }        
+        }
     }
-    
+
     startTime = GetWallTime();
 // Create new nifti image for output
     nifti_image *outputNifti = nifti_copy_nim_info(inputDWI);
     allNiftiImages[numberOfNiftiImages] = outputNifti;
-    numberOfNiftiImages++;    
-// Change dimensions for MAPMRI_RTOP    
+    numberOfNiftiImages++;
+// Change dimensions for MAPMRI_RTOP
     outputNifti->nt = 1;
     outputNifti->ndim = 3;
     outputNifti->dim[0] = 3;
     outputNifti->dim[4] = 1;
-    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D;    
+    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D;
 // Copy information from input data
     if (!CHANGE_OUTPUT_FILENAME)
     {
@@ -975,14 +966,14 @@ int main(int argc, char **argv)
     {
         nifti_set_filenames(outputNifti, outputFilename, 0, 1);
     }
-    
-    WriteNifti(outputNifti,MAPMRI_RTOP,"_RTOP",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);    
-// Change dimensions for MAPMRI_RTAP    
+
+    WriteNifti(outputNifti,MAPMRI_RTOP,"_RTOP",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);
+// Change dimensions for MAPMRI_RTAP
     outputNifti->nt = 3;
     outputNifti->ndim = 4;
     outputNifti->dim[0] = 4;
     outputNifti->dim[4] = 3;
-    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 3;    
+    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 3;
 // Copy information from input data
     if (!CHANGE_OUTPUT_FILENAME)
     {
@@ -992,15 +983,15 @@ int main(int argc, char **argv)
     {
         nifti_set_filenames(outputNifti, outputFilename, 0, 1);
     }
-    
+
     WriteNifti(outputNifti,MAPMRI_RTAP,"_RTAP",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);
-    
-// Change dimensions for MAPMRI_RTPP    
+
+// Change dimensions for MAPMRI_RTPP
     outputNifti->nt = 3;
     outputNifti->ndim = 4;
     outputNifti->dim[0] = 4;
     outputNifti->dim[4] = 3;
-    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 3;    
+    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 3;
 // Copy information from input data
     if (!CHANGE_OUTPUT_FILENAME)
     {
@@ -1010,14 +1001,14 @@ int main(int argc, char **argv)
     {
         nifti_set_filenames(outputNifti, outputFilename, 0, 1);
     }
-    WriteNifti(outputNifti,MAPMRI_RTPP,"_RTPP",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);  
-   
-// Change dimensions for MAPMRI_NG    
+    WriteNifti(outputNifti,MAPMRI_RTPP,"_RTPP",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);
+
+// Change dimensions for MAPMRI_NG
     outputNifti->nt = 7;
     outputNifti->ndim = 4;
     outputNifti->dim[0] = 4;
     outputNifti->dim[4] = 7;
-    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 7;    
+    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 7;
 // Copy information from input data
     if (!CHANGE_OUTPUT_FILENAME)
     {
@@ -1027,14 +1018,14 @@ int main(int argc, char **argv)
     {
         nifti_set_filenames(outputNifti, outputFilename, 0, 1);
     }
-    WriteNifti(outputNifti,MAPMRI_NG,"_NG",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);   
+    WriteNifti(outputNifti,MAPMRI_NG,"_NG",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);
 // Change dimensions for MAPMRI_PA
-    
+
     outputNifti->nt = 3;
     outputNifti->ndim = 4;
     outputNifti->dim[0] = 4;
     outputNifti->dim[3] = 3;
-    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 3;    
+    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * 3;
 // Copy information from input data
     if (!CHANGE_OUTPUT_FILENAME)
     {
@@ -1044,15 +1035,15 @@ int main(int argc, char **argv)
     {
         nifti_set_filenames(outputNifti, outputFilename, 0, 1);
     }
-    WriteNifti(outputNifti,MAPMRI_PA,"_PA",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);   
-    
+    WriteNifti(outputNifti,MAPMRI_PA,"_PA",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);
+
 // Change dimensions for MAPMRI_RESIDUAL
-    
+
     outputNifti->nt = DWI_DATA_T;
     outputNifti->ndim = 4;
     outputNifti->dim[0] = 4;
     outputNifti->dim[3] = DWI_DATA_D;
-    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * DWI_DATA_T;    
+    outputNifti->nvox = DWI_DATA_W * DWI_DATA_H * DWI_DATA_D * DWI_DATA_T;
 // Copy information from input data
     if (!CHANGE_OUTPUT_FILENAME)
     {
@@ -1063,16 +1054,16 @@ int main(int argc, char **argv)
         nifti_set_filenames(outputNifti, outputFilename, 0, 1);
     }
     WriteNifti(outputNifti,MAPMRI_RESIDUAL,"_RESIDUAL",ADD_FILENAME,DONT_CHECK_EXISTING_FILE);
-    
+
     endTime = GetWallTime();
     if (VERBOSE)
     {
         printf("It took %f seconds to write the nifti files.\n\n",(float)(endTime - startTime));
     }
-    
+
 // Free all memory
     FreeAllMemory(allMemoryPointers,numberOfMemoryPointers);
-    FreeAllNiftiImages(allNiftiImages,numberOfNiftiImages);    
+    FreeAllNiftiImages(allNiftiImages,numberOfNiftiImages);
     return EXIT_SUCCESS;
-    
+
 }

@@ -28,10 +28,10 @@ void CheckFileExtension(const char* filename, bool& extensionOK, std::string& ex
   // Compare extension to OK values
   std::string extension1 = ".nii";
   std::string extension2 = ".nii.gz";
-  std::string extension3 = ".bvals";
-  std::string extension4 = ".bvecs";
+  // std::string extension3 = ".bvals";
+  // std::string extension4 = ".bvecs";
 
-  if ( (extension.compare(extension1) != 0) && (extension.compare(extension2) != 0) && (extension.compare(extension3) != 0) && (extension.compare(extension4) != 0))
+  if ( (extension.compare(extension1) != 0) && (extension.compare(extension2) != 0) )
   {
     extensionOK = false;
   }
@@ -301,7 +301,7 @@ MatrixXd cart2sphere(MatrixXd X){
 double L0(double a, double x){
     return 1;
 }
- 
+
 double L1(double a, double x){
     return 1+a-x;
 }
@@ -318,14 +318,14 @@ double laguerre_poly(int n, double a, double x){
 }
 
 std::complex<double> spherical_harmonics(int m, int n, double theta, double phi){
-    
+
     double val = assoc_legendre(n,m,cos(phi));
-    val = val*sqrt((2*n+1)/4.0/M_PI);   
-    val = val*exp(0.5*(lgamma(n-m+1)-lgamma(n+m+1) ));   
+    val = val*sqrt((2*n+1)/4.0/M_PI);
+    val = val*exp(0.5*(lgamma(n-m+1)-lgamma(n+m+1) ));
     std::complex<double> sh;
     sh = val * exp(1i*(double)m*theta);
     return sh;
-    
+
 }
 
 double real_sph_harm(int m, int n, double theta, double phi){
@@ -344,17 +344,17 @@ double real_sph_harm(int m, int n, double theta, double phi){
         real_sh = real_sh*sqrt(2);
     }
     return real_sh;
-    
+
 }
 
 MatrixXd B123_matrix(MatrixXd n1, MatrixXd n2, MatrixXd n3){
     MatrixXd K123 = n1.unaryExpr([](const int x){return double((x+1)%2);}).array() * n2.unaryExpr([](const int x){return double((x+1)%2);}).array() * n3.unaryExpr([](const int x){return double((x+1)%2);}).array();
     MatrixXd B123 = K123.array() * (n1.unaryExpr(ptr_fun(factorial)).array()*n2.unaryExpr(ptr_fun(factorial)).array()*n3.unaryExpr(ptr_fun(factorial)).array()).sqrt() / n1.unaryExpr(ptr_fun(factorial2)).array() / n2.unaryExpr(ptr_fun(factorial2)).array() / n3.unaryExpr(ptr_fun(factorial2)).array();
     return B123;
-    
+
 }
 
-MatrixXd mapmri_isotropic_radial_signal_basis(int j, int l, double mu, MatrixXd qval){    
+MatrixXd mapmri_isotropic_radial_signal_basis(int j, int l, double mu, MatrixXd qval){
     MatrixXd pi2_mu2_q2 = 2*M_PI*M_PI*mu*mu*qval.array()*qval.array();
     int n = qval.rows();
     MatrixXd const1(n,1);
@@ -363,12 +363,12 @@ MatrixXd mapmri_isotropic_radial_signal_basis(int j, int l, double mu, MatrixXd 
         const1(i) = const1(i)*laguerre_poly(j-1, l+0.5,2*pi2_mu2_q2(i));
     }
     return const1;
-    
+
 }
 
 
 MatrixXd mapmri_phi_matrix(int radial_order, MatrixXd mu, MatrixXd R, MatrixXd q, MatrixXd n1, MatrixXd n2, MatrixXd n3){
-    int ncoeff = n1.rows(); 
+    int ncoeff = n1.rows();
     int DWI_DATA_T = q.cols();
     MatrixXd M(DWI_DATA_T, ncoeff);
     MatrixXcd phi1(DWI_DATA_T, ncoeff);
@@ -385,7 +385,7 @@ MatrixXd mapmri_phi_matrix(int radial_order, MatrixXd mu, MatrixXd R, MatrixXd q
         phi3.col(k) = pow(complex_i, -n3(k))/sqrt(pow(2, n3(k)) * factorial(n3(k))) * (-harg.row(2).array().pow(2)/2).exp() * polyval(hermite(n3(k)),harg.row(2)).array();
     }
     M = (phi1.array()*phi2.array()*phi3.array()).real();
-    return M;    
+    return M;
 }
 
 
@@ -402,7 +402,7 @@ MatrixXd mapmri_psi_matrix(int grid_size, MatrixXd constraint_grid, MatrixXd mu,
     MatrixXd psi2(N_constraints, ncoeff);
     MatrixXd psi3(N_constraints, ncoeff);
     MatrixXd M(N_constraints, ncoeff);
-    
+
     for (int k = 0; k < ncoeff; k++){
         psi1.col(k) = 1/sqrt(pow(2, n1(k)+1)*M_PI*factorial(n1(k))) / mu(0) * pre_cal1.array() * polyval(hermite(n1(k)),constraint_grid.col(0)/mu(0)).transpose().array();
         psi2.col(k) = 1/sqrt(pow(2, n2(k)+1)*M_PI*factorial(n2(k))) / mu(1) * pre_cal2.array() * polyval(hermite(n2(k)),constraint_grid.col(1)/mu(1)).transpose().array();
@@ -414,7 +414,7 @@ MatrixXd mapmri_psi_matrix(int grid_size, MatrixXd constraint_grid, MatrixXd mu,
 
 
 MatrixXd mapmri_isotropic_phi_matrix_pa(int radial_order, double mu, MatrixXd q){
-    
+
     MatrixXd Y = cart2sphere(q);
     MatrixXd qval = Y.col(0);
     MatrixXd theta = Y.col(1);
@@ -425,7 +425,7 @@ MatrixXd mapmri_isotropic_phi_matrix_pa(int radial_order, double mu, MatrixXd q)
     MatrixXd real_sh(q.rows(),1);
     for (int j=0;j<q.rows();j++)
     {
-        real_sh(j) = real_sph_harm(0,0,theta(j),phi(j));        
+        real_sh(j) = real_sph_harm(0,0,theta(j),phi(j));
     }
     int counter = 0;
     for (int j=1;j<j_max+1;j++)
@@ -435,11 +435,11 @@ MatrixXd mapmri_isotropic_phi_matrix_pa(int radial_order, double mu, MatrixXd q)
         counter++;
     }
     return M;
-    
+
 }
 
 
-MatrixXd mapmri_isotropic_radial_pdf_basis(int j, int l, double mu, MatrixXd r){    
+MatrixXd mapmri_isotropic_radial_pdf_basis(int j, int l, double mu, MatrixXd r){
     MatrixXd r2u2 = r.array()*r.array()/(2*mu*mu);
     int n = r.rows();
     MatrixXd const1(n,1);
@@ -448,7 +448,7 @@ MatrixXd mapmri_isotropic_radial_pdf_basis(int j, int l, double mu, MatrixXd r){
         const1(i) = const1(i)*laguerre_poly(j-1, l+0.5,2*r2u2(i));
     }
     return const1;
-    
+
 }
 
 
@@ -460,21 +460,21 @@ MatrixXd mapmri_isotropic_psi_matrix_pa(int radial_order, double mu, MatrixXd rg
     int j_max = radial_order/2+1;
     MatrixXd K = MatrixXd::Zero(rgrad.rows(), j_max);
     MatrixXd const1(rgrad.rows(),1);
-    MatrixXd real_sh(rgrad.rows(),1);    
+    MatrixXd real_sh(rgrad.rows(),1);
     for (int j=0;j<rgrad.rows();j++)
     {
-        real_sh(j) = real_sph_harm(0,0,theta(j),phi(j));        
+        real_sh(j) = real_sph_harm(0,0,theta(j),phi(j));
     }
     int counter = 0;
     for (int j=1;j<j_max+1;j++)
     {
         const1 = mapmri_isotropic_radial_pdf_basis(j,0,mu,r);
-        K.col(counter) = const1.array()*real_sh.array();        
+        K.col(counter) = const1.array()*real_sh.array();
 
         counter++;
     }
-    return K;    
-    
+    return K;
+
 }
 
 MatrixXd create_space(int grid_size, double radius_max){
@@ -482,7 +482,7 @@ MatrixXd create_space(int grid_size, double radius_max){
     VectorXd grid_y = VectorXd::LinSpaced(grid_size, -radius_max, radius_max);//cout << grid_y << endl;
     VectorXd grid_z = VectorXd::LinSpaced((grid_size+1)/2, 0, radius_max);//cout << grid_z << endl;
     int N_constraints = grid_size*grid_size*(grid_size+1)/2;
-    
+
     VectorXd rx(N_constraints);
     VectorXd ry(N_constraints);
     VectorXd rz(N_constraints);
@@ -513,7 +513,7 @@ MatrixXd create_space(int grid_size, double radius_max){
 }
 
 int K_m_plus_n(int m, int n){
- return (remainder(m,2)-1)*(remainder(n,2)-1);   
+ return (remainder(m,2)-1)*(remainder(n,2)-1);
 }
 
 Tensor<double, 4> Tmn_xi_storage(int radial_order){
@@ -565,9 +565,9 @@ MatrixXd T_zeta_matrix(MatrixXd mu, double mu0, MatrixXd n1, MatrixXd n2, Matrix
             if ((K_m_plus_n(n1(m),n1(n))+K_m_plus_n(n2(m),n2(n))+K_m_plus_n(n3(m),n3(n)))==3)
             {
                 T(m,n) = Tmn_xi_stor(n1(m),n1(n),zeta(0),stor_mat)*Tmn_xi_stor(n2(m),n2(n),zeta(1),stor_mat)*Tmn_xi_stor(n3(m),n3(n),zeta(2),stor_mat);
-                
-            }                        
-        }               
+
+            }
+        }
     }
     return T;
 }
@@ -584,7 +584,7 @@ double mapmri_rtop(MatrixXd mapmri_coef, MatrixXd mu, MatrixXd n1, MatrixXd n2, 
 }
 
 MatrixXd mapmri_rtap(MatrixXd mapmri_coef, MatrixXd mu, MatrixXd n1, MatrixXd n2, MatrixXd n3){
-    int ncoeff = n1.rows();    
+    int ncoeff = n1.rows();
     double rtap1sc = 1.0/2/M_PI/mu(1)/mu(2);
     double rtap2sc = 1.0/2/M_PI/mu(0)/mu(2);
     double rtap3sc = 1.0/2/M_PI/mu(0)/mu(1);
@@ -603,8 +603,8 @@ MatrixXd mapmri_rtap(MatrixXd mapmri_coef, MatrixXd mu, MatrixXd n1, MatrixXd n2
 }
 
 MatrixXd mapmri_rtpp(MatrixXd mapmri_coef, MatrixXd mu, MatrixXd n1, MatrixXd n2, MatrixXd n3){
-    int ncoeff = n1.rows();    
-    
+    int ncoeff = n1.rows();
+
     double  rtpp1sc = 1.0/sqrt(2*M_PI)/mu(0);
     double  rtpp2sc = 1.0/sqrt(2*M_PI)/mu(1);
     double  rtpp3sc = 1.0/sqrt(2*M_PI)/mu(2);
@@ -671,11 +671,11 @@ MatrixXd mapmri_ng(MatrixXd mapc, MatrixXd mu, MatrixXd n1, MatrixXd n2, MatrixX
         an1(k) = (mapc.array() * mo23.array() * B23.array() * ((n1.array() == k).select(MatrixXd::Ones(ncoeff,1), 0)).array()).sum();
         an2(k) = (mapc.array() * mo31.array() * B31.array() * ((n2.array() == k).select(MatrixXd::Ones(ncoeff,1), 0)).array()).sum();
         an3(k) = (mapc.array() * mo12.array() * B12.array() * ((n3.array() == k).select(MatrixXd::Ones(ncoeff,1), 0)).array()).sum();
-    }    
+    }
     for (int k1 = 0; k1 < order + 1; k1++)
     {
         for (int k2 = 0; k2 < order + 1; k2++)
-        {           
+        {
             an12(k1*(order+1) + k2) = (mapc.array() * mo3.array() * B3.array() * (((n1.array() == k1) && (n2.array() == k2)).select(MatrixXd::Ones(ncoeff,1), 0)).array()).sum();
             an23(k1*(order+1) + k2) = (mapc.array() * mo1.array() * B1.array() * (((n2.array() == k1) && (n3.array() == k2)).select(MatrixXd::Ones(ncoeff,1), 0)).array()).sum();
             an31(k1*(order+1) + k2) = (mapc.array() * mo2.array() * B2.array() * (((n3.array() == k1) && (n1.array() == k2)).select(MatrixXd::Ones(ncoeff,1), 0)).array()).sum();
@@ -731,9 +731,9 @@ dense_optimize(GRBEnv* env,
   GRBModel model = GRBModel(*env);
   int i, j;
   bool success = false;
-  
+
   //model.set(GRB_IntParam_Threads, 1);
-  /* Add variables to the model */  
+  /* Add variables to the model */
   GRBVar* vars = model.addVars(lb, ub, NULL, vtype, NULL, cols);
 
   /* Populate A matrix */
