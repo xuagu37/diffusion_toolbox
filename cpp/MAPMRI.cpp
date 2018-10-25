@@ -11,7 +11,7 @@
 #include <functional>
 #include <sstream>
 #include <omp.h>
-#include <math.h>        
+#include <math.h>       
 #include <unsupported/Eigen/CXX11/Tensor>
 
 using namespace std;
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     // No inputs, so print help text
     if (argc == 1)
     {
-        printf("\nThis function applies MAP-MRI to a diffusion dataset.\n");
+        printf("\nThis function applies MAP-MRI fitting.\n");
         printf("Usage:\n");
         printf("MAPMRI dwi.nii.gz brain_mask.nii.gz bvals bvecs [options]\n");
         printf("Options:\n");
@@ -100,9 +100,9 @@ int main(int argc, char **argv)
         printf(" -MIN_DIFFUSIVITY     Replace eigenvalues below, default 1e-4 \n");
         printf(" -b_threshold         Use volumes below b_threshold for tensor fitting, default 2000 \n");
         printf(" -dti_fit             DTI fit method, default WLS \n");
-        printf(" -output              Set output filename, optional\n");
+        printf(" -output              Set output filename \n");
         printf(" -threads             Number of threads for OpenMP, default 5 \n");
-        printf(" -verbose             Print extra stuff (default false) \n");
+        printf(" -verbose             Print extra stuff \n");
         return EXIT_SUCCESS;
     }    
     else if (argc > 1)
@@ -349,7 +349,7 @@ int main(int argc, char **argv)
         {
             if (i > DWI_DATA_T - 1)
             {
-                cout << "Number of B values should be the same as the number of data volumes!" << endl;
+                cout << "Number of b values should be the same as the number of data volumes!" << endl;
                 return EXIT_FAILURE;
             }
             bvals(i) = read_value;
@@ -358,7 +358,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        cout << "B values file does not exist." << endl;
+        cout << "b values file does not exist." << endl;
         return 0;
     }
     inputbvals.close();
@@ -380,7 +380,7 @@ int main(int argc, char **argv)
         {
             if (N_Bvecs_lines > DWI_DATA_T)
             {
-                cout << "Number of B vectors should be the same as the number of data volumes!";
+                cout << "Number of b vectors should be the same as the number of data volumes!";
                 return EXIT_FAILURE;
             }
             
@@ -393,7 +393,7 @@ int main(int argc, char **argv)
             {
                 if (i > 3*DWI_DATA_T - 1)
                 {
-                    cout << "Number of B vectors should be the same as the number of data volumes!" << endl;
+                    cout << "Number of b vectors should be the same as the number of data volumes!" << endl;
                     return EXIT_FAILURE;
                 }
                 bvecs(i%DWI_DATA_T, i/DWI_DATA_T) = read_value;
@@ -403,7 +403,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        cout << "B vectors file does not exist." << endl;
+        cout << "b vectors file does not exist." << endl;
         return 0;
     }
     
@@ -548,13 +548,13 @@ int main(int argc, char **argv)
         }
     }
     
-    MatrixXd X(DWI_DATA_T, 7);
+    //MatrixXd X(DWI_DATA_T, 7);
     MatrixXd X2(n_subdata, 7);
-    MatrixXd S_hat(DWI_DATA_T, 1);
+    //MatrixXd S_hat(DWI_DATA_T, 1);
     MatrixXd S_hat2(n_subdata, 1);
-    MatrixXd W(DWI_DATA_T, DWI_DATA_T);
+    //MatrixXd W(DWI_DATA_T, DWI_DATA_T);
     MatrixXd W2(n_subdata, n_subdata);
-    MatrixXd pinv_XW(7, DWI_DATA_T);
+    //MatrixXd pinv_XW(7, DWI_DATA_T);
     MatrixXd pinv_XW2(7, n_subdata);
     MatrixXd bvecs2(n_subdata, 3);
     MatrixXd bvals2(n_subdata, 1);
@@ -571,15 +571,15 @@ int main(int argc, char **argv)
         }
     }    
     
-    X.col(0) = (bvecs.col(0).array()*bvecs.col(0).array()*1*bvals.array()).matrix();
-    X.col(1) = (bvecs.col(0).array()*bvecs.col(1).array()*2*bvals.array()).matrix();
-    X.col(2) = (bvecs.col(1).array()*bvecs.col(1).array()*1*bvals.array()).matrix();
-    X.col(3) = (bvecs.col(0).array()*bvecs.col(2).array()*2*bvals.array()).matrix();
-    X.col(4) = (bvecs.col(1).array()*bvecs.col(2).array()*2*bvals.array()).matrix();
-    X.col(5) = (bvecs.col(2).array()*bvecs.col(2).array()*1*bvals.array()).matrix();
-    X.col(6).setOnes();
-    X.col(6) = - X.col(6);
-    X = -X;
+    //X.col(0) = (bvecs.col(0).array()*bvecs.col(0).array()*1*bvals.array()).matrix();
+    //X.col(1) = (bvecs.col(0).array()*bvecs.col(1).array()*2*bvals.array()).matrix();
+    //X.col(2) = (bvecs.col(1).array()*bvecs.col(1).array()*1*bvals.array()).matrix();
+    //X.col(3) = (bvecs.col(0).array()*bvecs.col(2).array()*2*bvals.array()).matrix();
+    //X.col(4) = (bvecs.col(1).array()*bvecs.col(2).array()*2*bvals.array()).matrix();
+    //X.col(5) = (bvecs.col(2).array()*bvecs.col(2).array()*1*bvals.array()).matrix();
+    //X.col(6).setOnes();
+    //X.col(6) = - X.col(6);
+    //X = -X;
     
     X2.col(0) = (bvecs2.col(0).array()*bvecs2.col(0).array()*1*bvals2.array()).matrix();
     X2.col(1) = (bvecs2.col(0).array()*bvecs2.col(1).array()*2*bvals2.array()).matrix();
@@ -594,9 +594,9 @@ int main(int argc, char **argv)
     // Get q
     MatrixXd q(3,DWI_DATA_T);
     q = (GYRO/2/M_PI*(bvecs.array()*(bvals.replicate(1,3)/tau/pow(GYRO,2)).array().sqrt())).transpose();  // 1/um, 3xT
-    MatrixXd pinv_X(7, DWI_DATA_T);
+    //MatrixXd pinv_X(7, DWI_DATA_T);
     MatrixXd pinv_X2(7, n_subdata);
-    pinv_X = X.completeOrthogonalDecomposition().pseudoInverse();
+    //pinv_X = X.completeOrthogonalDecomposition().pseudoInverse();
     pinv_X2 = X2.completeOrthogonalDecomposition().pseudoInverse();
     
     MatrixXd Y(DWI_DATA_T, 1); // Data for one voxel
@@ -604,7 +604,7 @@ int main(int argc, char **argv)
     MatrixXd Y_norm(DWI_DATA_T, 1); // Data for one voxel
     MatrixXd Y_norm1b0(DWI_DATA_T-n_b0+1, 1); // Data for one voxel    
     MatrixXd Y_norm2(n_subdata, 1); // Data for one subdata voxel
-    MatrixXd logY(DWI_DATA_T, 1); // Data for one voxel
+    //MatrixXd logY(DWI_DATA_T, 1); // Data for one voxel
     MatrixXd logY2(n_subdata, 1); // Data for one subdata voxel
     
     float S0 = 0;
@@ -693,7 +693,7 @@ int main(int argc, char **argv)
     float timeLeft = 0;
     SelfAdjointEigenSolver<MatrixXd> es;
     double currentTime;
-#pragma omp parallel for shared (order, bvals, n_b0, N,  DWI_Mask, DWI_DATA_T, DWI_Data,X,X2, pinv_X,pinv_X2, tau, ncoeff, complex_i, n1, n2, n3, grid_size, N_constraints, sense, rhs, lb, MAPMRI_RTOP, MAPMRI_RTAP, MAPMRI_RTPP, MAPMRI_NG, MAPMRI_PA, MAPMRI_RESIDUAL, VERBOSE, analyzed_voxels, analyzed_portion, N_in_mask, timeLeft, startTime, previous_analyzed_portion) private (i, t, k,eigenval1, eigenval2, eigenval3, es, psolver, dr, success,  objval, pinv_Q,  currentTime) firstprivate (Y_norm,Y_norm1b0,Y_norm2, Y,Y2, logY,logY2, W,W2, pinv_XW,pinv_XW2, S_hat,S_hat2, tensor_elements, tensor, R, Q,Qiso,Kiso,constraint_grid, constraint_grid_iso,Q1b0,Q1b0iso, Q0, Q0iso, mu,mu0, K,e, env,mapc,mapc_iso,A, H, c,Aiso,Hiso,ciso, S0,  roots, polynomial, theta_PO_DTI, theta_PO) num_threads(NUM_THREADS)
+#pragma omp parallel for shared (order, bvals, n_b0, N,  DWI_Mask, DWI_DATA_T, DWI_Data,X2,pinv_X2, tau, ncoeff, complex_i, n1, n2, n3, grid_size, N_constraints, sense, rhs, lb, MAPMRI_RTOP, MAPMRI_RTAP, MAPMRI_RTPP, MAPMRI_NG, MAPMRI_PA, MAPMRI_RESIDUAL, VERBOSE, analyzed_voxels, analyzed_portion, N_in_mask, timeLeft, startTime, previous_analyzed_portion) private (i, t, k,eigenval1, eigenval2, eigenval3, es, psolver, dr, success,  objval, pinv_Q,  currentTime) firstprivate (Y_norm,Y_norm1b0,Y_norm2, Y,Y2,logY2, W2,pinv_XW2,S_hat2, tensor_elements, tensor, R, Q,Qiso,Kiso,constraint_grid, constraint_grid_iso,Q1b0,Q1b0iso, Q0, Q0iso, mu,mu0, K,e, env,mapc,mapc_iso,A, H, c,Aiso,Hiso,ciso, S0,  roots, polynomial, theta_PO_DTI, theta_PO) num_threads(NUM_THREADS)
     for (i = 0; i < N; i++)
     {
         if (DWI_Mask[i])
@@ -718,7 +718,7 @@ int main(int argc, char **argv)
             Y_norm = Y/S0;
             Y_norm2 = Y2/S0;
             // Get the tensor for voxel i
-            logY = Y_norm.array().log();
+            //logY = Y_norm.array().log();
             logY2 = Y_norm2.array().log();            
             
             if (strcmp(dti_fit,"LS") == 0)
@@ -872,7 +872,7 @@ int main(int argc, char **argv)
                 cout << "Exception during optimization" << endl;
             }
             
-            MAPMRI_PA[i] = mapmri_pa(mapc, mapc_iso, mu, mu0, n1, n2, n3, order);    
+            MAPMRI_PA[i] = mapmri_pa(mapc, mapc_iso, mu, mu0, n1, n2, n3, order);   
             MAPMRI_PA[i+N] = sqrt(1 - 8*mu0*mu0*mu0*mu(0)*mu(1)*mu(2)/(mu(0)*mu(0)+mu0*mu0)/(mu(1)*mu(1)+mu0*mu0)/(mu(2)*mu(2)+mu0*mu0));            
             theta_PO_DTI = asin(MAPMRI_PA[i+N]);
             theta_PO = asin(MAPMRI_PA[i]);            
