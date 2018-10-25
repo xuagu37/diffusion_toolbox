@@ -68,7 +68,7 @@ int main(int argc, char **argv)
     printf(" -MIN_SIGNAL                Replace data value below, default 1 \n");
     printf(" -MIN_DIFFUSIVITY           Replace eigenvalues below, default 1e-6 \n");
     printf(" -verbose                   Print extra stuff (default false) \n");
-    printf(" -threads             Number of threads for OpenMP, default 5 \n");
+    printf(" -threads                   Number of threads for OpenMP, default 5 \n");
     return EXIT_SUCCESS;
   }
 
