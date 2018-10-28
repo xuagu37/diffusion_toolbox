@@ -180,16 +180,6 @@ int main(int argc, char **argv)
       MIN_SIGNAL = (float)strtod(argv[i+1], &p);
       i += 2;
     }
-    else if (strcmp(input,"-MIN_SIGNAL") == 0)
-    {
-      if ( (i+1) >= argc  )
-      {
-        printf("Unable to read name after -MIN_SIGNAL !\n");
-        return EXIT_FAILURE;
-      }
-      MIN_SIGNAL = (float)strtod(argv[i+1], &p);
-      i += 2;
-    }
     else if (strcmp(input,"-MIN_DIFFUSIVITY") == 0)
     {
       if ( (i+1) >= argc  )
@@ -598,7 +588,7 @@ int main(int argc, char **argv)
       DWI_Eigenvecs[i + 8*N] = es.eigenvectors()(2,2);
 
       DWI_FA[i] = sqrt( 0.5*(pow((DWI_Eigenvals[i + 0*N] - DWI_Eigenvals[i + 1*N]),2) + pow((DWI_Eigenvals[i + 1*N] - DWI_Eigenvals[i + 2*N]),2) + pow((DWI_Eigenvals[i + 2*N] - DWI_Eigenvals[i + 0*N]),2)) / (pow(DWI_Eigenvals[i + 0*N], 2) + pow(DWI_Eigenvals[i + 1*N], 2) + pow(DWI_Eigenvals[i + 2*N], 2)) );
-      DWI_MD[i] = (DWI_Eigenvals[i + 0]+DWI_Eigenvals[i + 1]+DWI_Eigenvals[i + 2])/3;
+      DWI_MD[i] = (DWI_Eigenvals[i + 0]+DWI_Eigenvals[i + 1]+DWI_Eigenvals[i + 2])/3.0;
       //cout << DWI_FA[i]  << endl;
       if (VERBOSE)
       {
