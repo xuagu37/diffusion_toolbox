@@ -17,7 +17,7 @@ mv ./libgurobi_c++.a ./libgurobi_c++.a.bak
 ln -s ${GUROBI_HOME}/src/build/libgurobi_c++.a ./libgurobi_c++.a  
 
 ### Compile:
-DT=~/dtb\
+DT=~/diffusion_toolbox\
 EIGEN=$DT/eigen\
 NIFTICLIB=$DT/nifticlib-2.0.0\
 GUROBI=$DT/gurobi751\
