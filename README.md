@@ -17,16 +17,21 @@ export GUROBI_HOME=/home/xuagu37/diffusion_toolbox/gurobi751/linux64\
 export PATH=$PATH:${GUROBI_HOME}/bin\
 export LD_LIBRARY_PATH=${GUROBI_HOME}/lib\
 export GRB_LICENSE_FILE=$HOME/gurobi.lic\
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib\
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib
+
 #### 2. Copy to local: git clone https://github.com/xuagu37/diffusion_toolbox.git
+
 #### 3. Get a Gurobi licence
+
 #### 4. Activate Gurobi licence: grbgetkey
+
 #### 5. Compile:
 DT=~/diffusion_toolbox\
 EIGEN=$DT/eigen\
 NIFTICLIB=$DT/nifticlib-2.0.0\
 GUROBI=$DT/gurobi751\
 g++ $DT/cpp/MAPMRI.cpp -o $DT/bin/MAPMRI -I$EIGEN -L$NIFTICLIB/linux/lib -I$NIFTICLIB/linux/niftilib -I$NIFTICLIB/linux/znzlib -I$GUROBI/linux64/include -L$GUROBI/linux64/lib/ -lniftiio -lznz -lz -lgurobi_c++ -lgurobi75 -O3 -march=native -std=c++17 -fopenmp -w
+
 #### 6. After installing Gurobi, you might need to recompile the libgurobi_c++.a by  
 cd ${GUROBI_HOME}/src/build\   
 make  \
