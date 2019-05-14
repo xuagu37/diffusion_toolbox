@@ -9,6 +9,20 @@ For MAPMRI, refer to [1]
 2. Gurobi optimization library
 3. EIGEN library  
 
+### How to use
+#### Set PATH
+# diffusion_toolbox
+export PATH=$PATH:/home/xuagu37/diffusion_toolbox/bin
+export PATH=$PATH:/home/xuagu37/diffusion_toolbox/bash
+export GUROBI_HOME=/home/xuagu37/diffusion_toolbox/gurobi751/linux64
+export PATH=$PATH:${GUROBI_HOME}/bin
+export LD_LIBRARY_PATH=${GUROBI_HOME}/lib
+export GRB_LICENSE_FILE=$HOME/gurobi.lic
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib
+#### git clone https://github.com/xuagu37/diffusion_toolbox.git
+#### Get a Gurobi licence
+#### 
+
 After installing Gurobi, you might need to recompile the libgurobi_c++.a by  
 cd ${GUROBI_HOME}/src/build   
 make  
