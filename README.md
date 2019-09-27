@@ -23,7 +23,7 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib
 #### 2. Copy to local: git clone https://github.com/xuagu37/diffusion_toolbox.git
 
 #### 3. Get a Gurobi licence
-
+https://www.gurobi.com/downloads/end-user-license-agreement-academic/  
 #### 4. Activate Gurobi licence 
 ```bash
 grbgetkey
