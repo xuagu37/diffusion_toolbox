@@ -1,7 +1,8 @@
 # Diffusion toolbox
 
 ## MAPMRI
-We provide a multithreaded c++ implementation for mean apparent propagator MRI (MAP-MRI) [1]. The code was used in our paper [2].
+We provide a multithreaded c++ implementation for mean apparent propagator MRI (MAP-MRI) [1].   
+The code was used in our MAP-MRI bootstrap paper [2].
 
 ### Dependencies:
 1. nifticlib
