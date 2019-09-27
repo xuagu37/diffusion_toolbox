@@ -1,7 +1,7 @@
 # Diffusion toolbox
 
 ## MAPMRI
-We provide a multithreaded c++ implementation for mean apparent propagator MRI (MAP-MRI) [1].
+We provide a multithreaded c++ implementation for mean apparent propagator MRI (MAP-MRI) [1]. The code was used in our paper [2].
 
 ### Dependencies:
 1. nifticlib
@@ -53,7 +53,7 @@ MAPMRI dwi.nii.gz brain_mask.nii.gz bvals.txt bvecs.txt -grid_size 15 -order 6 -
 ```
 
 ## DiffusionTensorFit
-We provide a multithreaded c++ implementation for diffusion tensor fit [2].
+We provide a multithreaded c++ implementation for diffusion tensor fit [3].
 
 
 ### Dependencies
@@ -75,7 +75,7 @@ DiffusionTensorFit dwi.nii.gz brain_mask.nii.gz bvals.txt bvecs.txt -threads 10
 ```
 
 ## dti_fit
-We provide a MATLAB implementation of diffusion tensor fitting [2].
+We provide a MATLAB implementation of diffusion tensor fitting [3].
 
 ### Run
 ```matlab
@@ -84,4 +84,5 @@ dti_parameters = dti_fit('data',dwi,'bvals',bvals,'bvecs',bvecs,'brain_mask',bra
 
 ## References
 [1] Özarslan, E., Koay, C.G., Shepherd, T.M., Komlosh, M.E., İrfanoğlu, M.O., Pierpaoli, C. and Basser, P.J., 2013. Mean apparent propagator (MAP) MRI: a novel diffusion imaging method for mapping tissue microstructure. NeuroImage, 78, pp.16-32.
-[2] Pierpaoli, C., Jezzard, P., Basser, P.J., Barnett, A. and Di Chiro, G., 1996. Diffusion tensor MR imaging of the human brain. Radiology, 201(3), pp.637-648.
+[2] Gu, X., Eklund, A., Özarslan, E. and Knutsson, H., 2019. Using the wild bootstrap to quantify uncertainty in mean apparent propagator MRI. Frontiers in Neuroinformatics, 13, p.43.
+[3] Pierpaoli, C., Jezzard, P., Basser, P.J., Barnett, A. and Di Chiro, G., 1996. Diffusion tensor MR imaging of the human brain. Radiology, 201(3), pp.637-648.
