@@ -53,27 +53,35 @@ MAPMRI dwi.nii.gz brain_mask.nii.gz bvals.txt bvecs.txt -grid_size 15 -order 6 -
 ```
 
 ## DiffusionTensorFit
+We provide a multithreaded c++ implementation for diffusion tensor fit [2].
 
-### Dependencies:
+
+### Dependencies
 1. nifticlib
 2. Gurobi optimization library
 3. EIGEN library  
 
-### Compile:
+### Compile
+```bash
 DT=~/diffusion_toolbox\
 EIGEN=$DT/eigen\
 NIFTICLIB=$DT/nifticlib-2.0.0\
 g++ $DT/cpp/DiffusionTensorFit.cpp -lniftiio -lznz -lz -I$DT/eigen/ -L$DT/nifticlib-2.0.0/linux/lib -I$DT/nifticlib-2.0.0/linux/niftilib -I$DT/nifticlib-2.0.0/linux/znzlib -I$GUROBI/linux64/include -L$GUROBI/linux64/lib/ -lniftiio -lznz -lz -lgurobi_c++ -lgurobi75  -O3  -march=native -std=c++17 -fopenmp -o $DT/bin/DiffusionTensorFit -w 
+```
 
-### Run:
+### Run
+```bash
 DiffusionTensorFit dwi.nii.gz brain_mask.nii.gz bvals.txt bvecs.txt -threads 10
+```
 
 ## dti_fit
-dti_fit.m, a MATLAB implementation of diffusion tensor fitting
+We provide a MATLAB implementation of diffusion tensor fitting [2].
 
-### Run:
+### Run
+```matlab
 dti_parameters = dti_fit('data',dwi,'bvals',bvals,'bvecs',bvecs,'brain_mask',brain_mask);
-
+```
 
 ## References
-[1] Özarslan, Evren, et al. "Mean apparent propagator (MAP) MRI: a novel diffusion imaging method for mapping tissue microstructure." NeuroImage 78 (2013): 16-32.
+[1] Özarslan, E., Koay, C.G., Shepherd, T.M., Komlosh, M.E., İrfanoğlu, M.O., Pierpaoli, C. and Basser, P.J., 2013. Mean apparent propagator (MAP) MRI: a novel diffusion imaging method for mapping tissue microstructure. NeuroImage, 78, pp.16-32.
+[2] Pierpaoli, C., Jezzard, P., Basser, P.J., Barnett, A. and Di Chiro, G., 1996. Diffusion tensor MR imaging of the human brain. Radiology, 201(3), pp.637-648.
