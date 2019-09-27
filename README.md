@@ -84,5 +84,5 @@ dti_parameters = dti_fit('data',dwi,'bvals',bvals,'bvecs',bvecs,'brain_mask',bra
 
 ## References
 [1] Özarslan, E., Koay, C.G., Shepherd, T.M., Komlosh, M.E., İrfanoğlu, M.O., Pierpaoli, C. and Basser, P.J., 2013. Mean apparent propagator (MAP) MRI: a novel diffusion imaging method for mapping tissue microstructure. NeuroImage, 78, pp.16-32.
-[2] Gu, X., Eklund, A., Özarslan, E. and Knutsson, H., 2019. Using the wild bootstrap to quantify uncertainty in mean apparent propagator MRI. Frontiers in Neuroinformatics, 13, p.43.
+[2] Gu, X., Eklund, A., Özarslan, E. and Knutsson, H., 2019. Using the wild bootstrap to quantify uncertainty in mean apparent propagator MRI. Frontiers in Neuroinformatics, 13, p.43.  
 [3] Pierpaoli, C., Jezzard, P., Basser, P.J., Barnett, A. and Di Chiro, G., 1996. Diffusion tensor MR imaging of the human brain. Radiology, 201(3), pp.637-648.
